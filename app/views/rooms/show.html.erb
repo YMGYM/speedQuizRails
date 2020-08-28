@@ -1,2 +1,7 @@
-<h1>Room#show</h1>
-<p>Find me in app/views/room/show.html.erb</p>
+<div class="container">
+  <% if @room.nowPlaying == false %>
+    <%= render 'waitroom' %>
+  <% else %>
+    <%= render 'playingroom' %>
+  <%  end %>
+</div>

@@ -1,0 +1,52 @@
+<div class="row" style="height: 50px"></div>
+<h1>#<%= @room.id %> / <%= @room.title %></h1>
+<p><%= Question.find(@room.question).title %></p>
+<p>문제 수 : <%= @room.questionNumber %></p>
+<p>제한시간 : <%= @room.limitTime %></p>
+<hr>
+<div class="container overflow-auto" style="height: 300px">
+  <div class="alert alert-secondary" role="alert">
+    [시스템 메시지] : 곧 문제가 재생됩니다.
+  </div>
+
+  <div class="alert alert-light" role="alert">
+    YMGYM : 와 진짜 모르겠다
+  </div>
+
+  <div class="alert alert-light" role="alert">
+    J.D. : 디지몬
+  </div>
+
+  <div class="alert alert-secondary" role="alert">
+    [시스템 메시지] : "J.D."님 "디지몬 어드벤쳐 - Power Up" 정답입니다.
+  </div>
+
+  <div class="alert alert-light" role="alert">
+    J.D. : ㅎㅎㅎ
+  </div>
+
+  <div class="alert alert-secondary" role="alert">
+    [시스템 메시지] : 곧 문제가 재생됩니다.
+  </div>
+</div>
+<div class="margin-s10"></div>
+
+<form class="form-row">
+  <div class="form-group col-sm-11">
+    <input type="text" class="form-control margin-top-10"  placeholder="이곳에 채팅을 입력하세요">
+  </div>
+  <button type="submit" class="btn btn-dark col-sm-1">전송</button>
+</form>
+
+<div class="row">
+  <% 4.times do %>
+    <div class="col-sm-4 margin-top-10">
+      <div class="card border-info overflow-auto">
+        <div class="card-body">
+          <h5 class="card-title">YMGYM</h5>
+          <p class="card-text float-right">1 points</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -4,7 +4,7 @@ class RoomsController < ApplicationController
   end
 
   def index
-    @room = Room.all
+    @room = Room.all.reverse
   end
 
   def new
@@ -17,20 +17,29 @@ class RoomsController < ApplicationController
 
     if room.save
       redirect_to room
+    else
+      render 'form'
     end
 
   end
 
   def show
-
+    @room = Room.find(params[:id])
   end
 
   def edit
-
+    @room = Room.find(params[:id])
   end
 
   def update
+    room = Room.find(params[:id])
+    room.update(rooms_params)
 
+    if room.save
+      redirect_to room
+    else
+      render 'form'
+    end
   end
 
   def destroy
