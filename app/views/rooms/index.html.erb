@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row" style="height: 50px"></div>
+  <h1>대기실 목록</h1>
+  <p>게임을 플레이할 방을 찾아 주세요</p>
+
+  <div class="margin-top-10">
+    <%= form_with(url: "/search", method: "get") do %>
+      <div class="form-row justify-content-end">
+        <div class="col-6 col-sm-4">
+          <%= text_field_tag :q, nil, class:"form-control", placeholder: "방 번호로 검색"%>
+        </div>
+
+        <div class="col-2 col-sm-1">
+          <%= submit_tag "검색", class:"btn btn-secondary float-right" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+
+
+  <div class="row" style="height: 100px"> </div>
+    <div class="row justify-content-end margin-top-10">
+      <div class="col-sm-3">
+        <a href="<%= new_room_path %>" class="btn btn-info float-right">방 생성하기</a>
+      </div>
+    </div>
+  <div class="row">
+    <% @room.each do |r| %>
+      <% if r.nowPlaying == false %>
+        <div class="col-sm-12 col-lg-3 margin-top-10">
+          <div class="card border-info overflow-auto">
+            <div class="card-body">
+              <p>#<%= r.id %></p>
+              <h5 class="card-title"><%= r.title %></h5>
+              <p class="card-text"><%= Question.find(r.question).title %></p>
+              <a href="<%= room_path(r.id) %>" class="btn btn-outline-info float-right">입장하기</a>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="col-sm-12 col-lg-3 margin-top-10">
+          <div class="card bg-light overflow-auto">
+            <div class="card-body">
+              <p>#<%= r.id %></p>
+              <h5 class="card-title"><%= r.title %></h5>
+              <p class="card-text"><%= Question.find(r.question).title  %>.</p>
+              <a href="#" class="btn btn-outline-dark float-right disabled">게임중</a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+
+</div>
