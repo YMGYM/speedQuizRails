@@ -5,3 +5,17 @@
   <div class="row" style="height: 50px"></div>
   <%= render 'form' %>
 </div>
+
+<script type="text/javascript">
+    function openPass() {
+        var passInput = document.getElementById('room_password');
+          if (passInput.disabled == true){
+              passInput.disabled = false;
+          }
+          else {
+              passInput.value = "";
+              passInput.disabled = true;
+
+          }
+        }
+</script>

@@ -12,13 +12,13 @@ class RoomsController < ApplicationController
   end
 
   def create
-    room  = Room.new(rooms_params)
+    room = Room.new(rooms_params)
     room.nowPlaying = false
-
+    room.save
     if room.save
       redirect_to room
     else
-      render 'form'
+      # render 'form'
     end
 
   end
@@ -45,6 +45,14 @@ class RoomsController < ApplicationController
   def destroy
 
   end
+
+  def secret
+    @room_id = params[:id]
+  end
+
+  # def passCheck
+  #   redirect_to room_path(id: params[:room_id])
+  # end
 
   private
   def rooms_params

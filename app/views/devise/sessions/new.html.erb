@@ -1,6 +1,7 @@
 <div class="container-lg">
   <div class="row" style="height: 50px"></div>
     <h2>로그인</h2>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="field">
@@ -21,7 +22,7 @@
       <% end %>
 
       <div class="actions">
-        <%= f.submit "Log in", class:"btn btn-secondary float-right margin-10" %>
+        <%= f.submit "로그인", class:"btn btn-secondary float-right margin-10" %>
       </div>
     <% end %>
 

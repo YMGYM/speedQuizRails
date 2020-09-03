@@ -23,7 +23,12 @@
         <div class="navbar-nav">
           <a class="nav-link active" href="<%= root_path %>">Home<span class="sr-only">(current)</span></a>
           <a class="nav-link" href="<%= rooms_path %>">게임하기</a>
-          <a class="nav-link" href="#">내 정보</a>
+          <% if current_user %>
+<!--            <a class="nav-link" href="<%#= destroy_user_sdession %>">로그아웃</a>-->
+                <%= link_to '로그아웃', destroy_user_session_path,  method: :delete, class: "nav-link" %>
+          <% else %>
+              <%= link_to '로그인', new_user_session_path,class: "nav-link" %>
+          <% end %>
           <a class="nav-link" href="#">도움말</a>
         </div>
       </div>
