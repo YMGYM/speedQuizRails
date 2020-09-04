@@ -1,4 +1,6 @@
 class RoomsController < ApplicationController
+  before_action :authenticate_user!, except: :main
+
   def main
 
   end
@@ -14,11 +16,15 @@ class RoomsController < ApplicationController
   def create
     room = Room.new(rooms_params)
     room.nowPlaying = false
-    room.save
+
+    if room.isSecret == false
+      room.password = "ThisIsaDummy"
+    end
+
     if room.save
       redirect_to room
     else
-      # render 'form'
+      redirect_to new_room_path, flash: {alert: "에러 발생! 무언가 잘못되었어요"}
     end
 
   end
@@ -38,7 +44,7 @@ class RoomsController < ApplicationController
     if room.save
       redirect_to room
     else
-      render 'form'
+      redirect_to new_room_path, flash: {alert: "에러 발생! 무언가 잘못되었어요"}
     end
   end
 
@@ -47,15 +53,22 @@ class RoomsController < ApplicationController
   end
 
   def secret
-    @room_id = params[:id]
+    @room = Room.find(params[:id])
   end
 
-  # def passCheck
-  #   redirect_to room_path(id: params[:room_id])
-  # end
+  def passCheck
+    @room = Room.find(params[:id])
+    chk = @room.authenticate(params[:roomPassword])
+    if chk
+      redirect_to room_path(@room)
+    else
+      redirect_to '/secret/' + @room.id.to_s, flash: {alert: "비밀번호가 다릅니다!"}
+    end
+  end
 
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)
   end
+
 end

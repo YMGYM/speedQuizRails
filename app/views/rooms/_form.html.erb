@@ -1,4 +1,9 @@
 <%= form_with(model: @room, scope: :room) do  |form| %>
+   <% if flash.present? %>
+    <div class="alert alert-dark" role="alert">
+      <%= flash[:alert]%>
+    </div>
+  <% end %>
   <div class="form-group">
     <%= form.label :title, '방 제목' %>
     <%= form.text_field :title, class:"form-control"%>

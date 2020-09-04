@@ -1,7 +1,11 @@
 <div class="container-lg">
   <div class="row" style="height: 50px"></div>
     <h2>로그인</h2>
-    <%= render "devise/shared/error_messages", resource: resource %>
+    <% if flash.present? %>
+      <div class="alert alert-dark" role="alert">
+        <%= flash[:alert]%>
+      </div>
+    <% end %>
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="field">
