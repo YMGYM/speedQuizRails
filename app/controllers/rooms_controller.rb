@@ -22,6 +22,7 @@ class RoomsController < ApplicationController
     end
 
     if room.save
+      session[:lastroom] = room.id
       redirect_to room
     else
       redirect_to new_room_path, flash: {alert: "에러 발생! 무언가 잘못되었어요"}
@@ -31,6 +32,9 @@ class RoomsController < ApplicationController
 
   def show
     @room = Room.find(params[:id])
+    room_authenticate
+
+    session[:lastroom] = @room.id
   end
 
   def edit
@@ -42,6 +46,7 @@ class RoomsController < ApplicationController
     room.update(rooms_params)
 
     if room.save
+      session[:lastroom] = room.id
       redirect_to room
     else
       redirect_to new_room_path, flash: {alert: "에러 발생! 무언가 잘못되었어요"}
@@ -60,6 +65,7 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:id])
     chk = @room.authenticate(params[:roomPassword])
     if chk
+      session[:lastroom] = @room.id
       redirect_to room_path(@room)
     else
       redirect_to '/secret/' + @room.id.to_s, flash: {alert: "비밀번호가 다릅니다!"}
@@ -69,6 +75,14 @@ class RoomsController < ApplicationController
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)
+  end
+
+  def room_authenticate
+    if (@room.isSecret == true) and (session[:lastroom] != @room.id)
+      redirect_to '/secret/' + params[:id]
+    end
+
+
   end
 
 end
