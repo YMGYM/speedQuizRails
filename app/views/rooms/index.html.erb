@@ -3,8 +3,14 @@
   <h1>대기실 목록</h1>
   <p>게임을 플레이할 방을 찾아 주세요</p>
 
+  <% if flash.present? %>
+    <div class="alert alert-dark" role="alert">
+      <%= flash[:alert]%>
+    </div>
+  <% end %>
+
   <div class="margin-top-10">
-    <%= form_with(url: "/search", method: "get") do %>
+    <%= form_with(url: "/search", method: "post") do %>
       <div class="form-row justify-content-end">
         <div class="col-6 col-sm-4">
           <%= text_field_tag :q, nil, class:"form-control", placeholder: "방 번호로 검색"%>

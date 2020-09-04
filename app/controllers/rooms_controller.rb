@@ -72,6 +72,16 @@ class RoomsController < ApplicationController
     end
   end
 
+  def search
+    begin
+      room = Room.find(params[:q])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to rooms_path, flash: {alert: "없는 번호입니다!"}
+    else
+      redirect_to room_path(room.id)
+    end
+  end
+
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)
