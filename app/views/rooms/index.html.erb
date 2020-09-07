@@ -3,11 +3,7 @@
   <h1>대기실 목록</h1>
   <p>게임을 플레이할 방을 찾아 주세요</p>
 
-  <% if flash.present? %>
-    <div class="alert alert-dark" role="alert">
-      <%= flash[:alert]%>
-    </div>
-  <% end %>
+
 
   <div class="margin-top-10">
     <%= form_with(url: "/search", method: "post") do %>

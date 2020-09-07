@@ -14,6 +14,11 @@ class RoomsController < ApplicationController
   end
 
   def create
+    if current_user.player
+      redirect_to rooms_path, flash: {alert: "이미 방이 있는 경우 생성할 수 없어요"}
+      return
+    end
+
     room = Room.new(rooms_params)
     room.nowPlaying = false
 
@@ -22,6 +27,7 @@ class RoomsController < ApplicationController
     end
 
     if room.save
+      room.players.create(user_id: current_user.id, isMaster: true, isReady: true)
       session[:lastroom] = room.id
       redirect_to room
     else
@@ -32,9 +38,16 @@ class RoomsController < ApplicationController
 
   def show
     @room = Room.find(params[:id])
-    room_authenticate
 
+    if !current_user.player
+      @room.players.create(user_id: current_user.id)
+    end
+
+    @user = Player.find_by_user_id(current_user.id)
+    room_authenticate
     session[:lastroom] = @room.id
+
+
   end
 
   def edit
@@ -82,6 +95,15 @@ class RoomsController < ApplicationController
     end
   end
 
+  def roomquit
+    player = current_user.player
+    if player.isMaster == true
+
+    end
+    player.destroy
+    redirect_to rooms_path
+  end
+
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)
@@ -90,9 +112,13 @@ class RoomsController < ApplicationController
   def room_authenticate
     if (@room.isSecret == true) and (session[:lastroom] != @room.id)
       redirect_to '/secret/' + params[:id]
+      return
     end
 
-
+    if (current_user.room.id != @room.id) & (current_user.player != nil)
+      redirect_to room_path(current_user.room.id), flash: {alert: "기존에 플레이하던 방으로 이동됩니다."}
+      return
+    end
   end
 
 end

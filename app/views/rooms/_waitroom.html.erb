@@ -4,32 +4,40 @@
 <p>문제 수 : <%= @room.questionNumber %></p>
 <p>제한시간 : <%= @room.limitTime %></p>
 
-<div class="row">
-  <a href="#" class="btn btn-lg btn-secondary col-sm-5">준비</a>
-  <div class="col-sm-2"></div>
-  <a href="#" class="btn btn-lg btn-outline-dark col-sm-5">방 나가기</a>
-</div>
+<% if @user.isMaster == true %>
+  <div class="row">
+    <a href="#" class="btn btn-lg btn-secondary col-sm-5">시작</a>
+    <div class="col-sm-2"></div>
+    <%= link_to '방 폭파하기', '/roomquit', class: "btn btn-lg btn-outline-dark col-sm-5", method: :delete %>
+  </div>
+<% else %>
+  <div class="row">
+    <a href="#" class="btn btn-lg btn-secondary col-sm-5">준비</a>
+    <div class="col-sm-2"></div>
+    <%= link_to '방 나가기', '/roomquit', class: "btn btn-lg btn-outline-dark col-sm-5", method: :delete %>
+  </div>
+<% end %>
 <div class="row" style="height: 100px"> </div>
 <div class="row">
-  <% 2.times do %>
+  <% @room.users.each do |player| %>
     <div class="col-sm-4 margin-top-10">
       <div class="card border-info overflow-auto">
         <div class="card-body">
-          <h5 class="card-title">준비 안 된 플레이어</h5>
+          <h5 class="card-title"><%= player.email %></h5>
           <p class="card-text"></p>
           <a href="" class="btn btn-sm btn-outline-info float-right">추방</a>
         </div>
       </div>
     </div>
 
-    <div class="col-sm-4 margin-top-10">
-      <div class="card bg-light overflow-auto">
-        <div class="card-body">
-          <h5 class="card-title">준비 된 플레이어</h5>
-          <p class="card-text"></p>
-          <a href="" class="btn btn-sm btn-outline-info float-right">추방</a>
-        </div>
-      </div>
-    </div>
+<!--    <div class="col-sm-4 margin-top-10">-->
+<!--      <div class="card bg-light overflow-auto">-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">준비 된 플레이어</h5>-->
+<!--          <p class="card-text"></p>-->
+<!--          <a href="" class="btn btn-sm btn-outline-info float-right">추방</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   <% end %>
 </div>

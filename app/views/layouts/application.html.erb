@@ -33,6 +33,11 @@
         </div>
       </div>
     </nav>
+    <% if flash.present? %>
+      <div class="alert alert-dark" role="alert">
+        <%= flash[:alert]%>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>
