@@ -1,0 +1,25 @@
+<input type="text" id="text" />
+<input type="button" value="send" onclick="send();"><a href="javascript:location.reload();"></a></input>
+<div id="messages"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+var socket = io.connect("http://localhost:4000");
+var userInfo = "<%=current_user.email%>";
+
+function send() {
+  var value = document.getElementById("text").value;
+  socket.emit("sendUser", {
+    email: userInfo,
+    value: value,
+    score: 0
+  });
+}
+
+socket.on("userInfo", (data) => {
+  var messages = document.getElementById("messages");
+  var text = document.createTextNode(`${data.email} - ${data.score} : ${data.value}`);
+  messages.appendChild(text);
+  messages.appendChild(document.createElement("br"));
+});
+</script>
