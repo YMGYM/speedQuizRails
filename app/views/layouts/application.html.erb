@@ -22,7 +22,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" href="<%= root_path %>">Home<span class="sr-only">(current)</span></a>
-          <a class="nav-link" href="<% if current_user.room %> <%= room_path(current_user.room.id) %><% else %><%= rooms_path %> <%end %>">게임하기</a>
+          <a class="nav-link" href="<% if current_user %><% if current_user.room %> <%= room_path(current_user.room.id) %><% else %><%= rooms_path %> <%end %><% else %><%= rooms_path %><%end %>">게임하기</a>
           <% if current_user %>
 <!--            <a class="nav-link" href="<%#= destroy_user_sdession %>">로그아웃</a>-->
                 <%= link_to '로그아웃', destroy_user_session_path,  method: :delete, class: "nav-link" %>
