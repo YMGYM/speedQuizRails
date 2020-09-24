@@ -97,13 +97,30 @@ class RoomsController < ApplicationController
 
   def roomquit
     player = current_user.player
-    if player.isMaster == true
+    room = player.room
+    num_person = room.players.size
 
+    if num_person == 1
+      room.destroy
+      player.destroy
+      redirect_to rooms_path
+      return
+    end
+
+    if player.isMaster == true
+      next_user = Room.find(room.id).players.second
+      next_user.update(isMaster: true)
     end
     player.destroy
+
+
+
     redirect_to rooms_path
   end
 
+  def help
+
+  end
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)

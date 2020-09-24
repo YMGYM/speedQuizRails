@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   delete '/roomquit' => 'rooms#roomquit'
 
   get '/chat' => 'chat#index'
+  get 'help' => 'rooms#help', as: :help
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

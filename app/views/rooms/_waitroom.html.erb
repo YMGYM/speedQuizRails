@@ -8,7 +8,7 @@
   <div class="row">
     <a href="#" class="btn btn-lg btn-secondary col-sm-5">시작</a>
     <div class="col-sm-2"></div>
-    <%= link_to '방 폭파하기', '/roomquit', class: "btn btn-lg btn-outline-dark col-sm-5", method: :delete %>
+    <%= link_to '방 나가기', '/roomquit', class: "btn btn-lg btn-outline-dark col-sm-5", method: :delete %>
   </div>
 <% else %>
   <div class="row">
@@ -39,7 +39,9 @@
   <% end %>
 
 </div>
+
 <p id="ViewTimer"></p>
+
 <script>
 
     var SetTime = 30;		// 최초 설정 시간(기본 : 초)
@@ -60,8 +62,6 @@
 
     }
 
-
-    function TimerStart(){ tid=setInterval('msg_time()',1000) };
+    function TimerStart(){tid=setInterval('msg_time()',1000) }
     document.addEventListener("DOMContentLoaded", TimerStart());
-
 </script>
