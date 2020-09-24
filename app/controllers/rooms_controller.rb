@@ -121,6 +121,12 @@ class RoomsController < ApplicationController
   def help
 
   end
+
+  def startGame
+    room = current_user.room
+    room.update(nowPlaying: true)
+    redirect_to room
+  end
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)

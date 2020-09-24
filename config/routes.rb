@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   get '/chat' => 'chat#index'
   get 'help' => 'rooms#help', as: :help
+  post '/startGame' => 'rooms#startGame', as: :startGame
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
