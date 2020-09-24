@@ -1,8 +1,12 @@
+
 <div class="row" style="height: 50px"></div>
 <h1>#<%= @room.id %> / <%= @room.title %></h1>
 <p><%= Question.find(@room.question).title %></p>
 <p>문제 수 : <%= @room.questionNumber %></p>
 <p>제한시간 : <%= @room.limitTime %></p>
+<hr>
+<button id="unmuteButton" class="form-control btn btn" >소리가 나오지 않는다면 이곳을 눌러주세요(다시재생 포함)</button>
+<br />
 <hr>
 <div class="container overflow-auto" style="height: 300px">
   <div class="alert alert-secondary" role="alert">
@@ -50,3 +54,58 @@
     </div>
   <% end %>
 </div>
+
+<div hidden>
+  <div id="player"></div>
+</div>
+
+
+
+<script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '360',
+            width: '640',
+            videoId: 'VNNsrjm6Nig', // 여기하고
+            playerVars: {
+                'start': 10, // 여기 수정
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange,
+            }
+        });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        event.target.mute();
+        event.target.playVideo();
+
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    function onPlayerStateChange(event) {
+        setTimeout(stopVideo, 500);
+    }
+    function stopVideo() {
+        player.unMute();
+    }
+
+    unmuteButton.addEventListener('click', function() {
+        player.playVideo();
+    });
+</script>
