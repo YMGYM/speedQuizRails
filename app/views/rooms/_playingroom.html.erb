@@ -43,11 +43,11 @@
 </form>
 
 <div class="row">
-  <% 4.times do %>
+  <% @room.players.each do |player| %>
     <div class="col-sm-4 margin-top-10">
       <div class="card border-info overflow-auto">
         <div class="card-body">
-          <h5 class="card-title">YMGYM</h5>
+          <h5 class="card-title"><%= player.user.nickName %></h5>
           <p class="card-text float-right">1 points</p>
         </div>
       </div>
@@ -80,6 +80,7 @@
             videoId: 'VNNsrjm6Nig', // 여기하고
             playerVars: {
                 'start': 10, // 여기 수정
+
                 // 무한반복용 루프 설정도구. 복잡해서 뺐음
                 'loop' : 1,
                 'playlist': 'VNNsrjm6Nig'

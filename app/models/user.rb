@@ -6,4 +6,6 @@ class User < ApplicationRecord
 
   has_one :player
   has_one :room, through: :player
+
+  validates_uniqueness_of :nickName
 end

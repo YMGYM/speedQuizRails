@@ -10,6 +10,11 @@
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
     </div>
 
+    <div class="field'">
+      <%= f.label :nickName, "닉네임"  %><br />
+      <%= f.text_field :nickName, required: true, class: "form-control" %>
+    </div>
+
     <div class="field">
       <%= f.label :password, "비밀번호" %>
       <% if @minimum_password_length %>
