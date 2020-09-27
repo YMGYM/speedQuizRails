@@ -1,3 +1,4 @@
+/*
 class ChatController < ApplicationController
   before_action :authenticate_user!, except: :main
 
@@ -13,3 +14,4 @@ class ChatController < ApplicationController
     #render :text => 'OK'
   end
 end
+*/

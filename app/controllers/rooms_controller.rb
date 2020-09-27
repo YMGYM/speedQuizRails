@@ -47,7 +47,12 @@ class RoomsController < ApplicationController
     room_authenticate
     session[:lastroom] = @room.id
 
-
+    @emitter = SocketIO::Emitter.new(
+      redis: Redis.new(
+        :host => 'localohst',
+        :port => '6379'
+      )
+    )
   end
 
   def edit
@@ -130,6 +135,7 @@ class RoomsController < ApplicationController
   private
   def rooms_params
     params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)
+
   end
 
   def room_authenticate
@@ -143,5 +149,4 @@ class RoomsController < ApplicationController
       return
     end
   end
-
 end
