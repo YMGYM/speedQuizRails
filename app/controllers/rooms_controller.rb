@@ -53,6 +53,8 @@ class RoomsController < ApplicationController
         :port => '6379'
       )
     )
+
+    @players = @room.players.map {|m| m.user.id}
   end
 
   def edit
