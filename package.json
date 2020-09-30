@@ -6,6 +6,7 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.2.2",
+    "csv-parser": "2.3.3",
     "express": "4.17.1",
     "node-rails-cookies": "0.0.0",
     "redis": "3.0.2",

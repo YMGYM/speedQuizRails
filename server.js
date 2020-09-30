@@ -1,30 +1,50 @@
 var io = require("socket.io").listen(4000);
 var redis = require("socket.io-redis");
 var redisServer = require('redis');
+var csv = require('csv-parser');
 var client = redisServer.createClient();
+var fs = require('fs');
 //redis와 연결
 io.adapter(redis({
   host: "localhost", //rails와 같게
   port: "6379" //rails와 같게
 }));
 var flag = false;
-var kotae = '밀리시타최고';
-var queArr = [];
+var user = [];
+var index = 0;
 
+var answer = [];
+var url = [];
+var startTime = [];
+
+fs.createReadStream('./Questions/girlsIdol.csv')
+  .pipe(csv())
+  .on('data', (row) => {
+    answer.push({answer: row.answer, keyword: row.answerKeyword});
+    url.push(row.src);
+    startTime.push(row.startTime);
+  })
+  .on('end', () => {
+    console.log('CSV file successfully processed');
+  });
+/*
 client.keys('*', (err, keys) => {
   for (const [key, value] of Object.entries(keys)) {
     client.hgetall(`${value}`, async(err, ans) => {
       if(ans.src !== undefined){
         await queArr.push(ans);
-        console.log(ans);
       }
     });
   }
-});
+});*/
 
 io.sockets.on("connection", function(socket) {
+  var score = 0;
+
+
   io.emit('answer', {
-    queArr: queArr
+    url: url,
+    startTime: startTime
   });
   socket.on("sendUser", (data) => {
     //redisdb와 data.value비교,
@@ -41,17 +61,21 @@ io.sockets.on("connection", function(socket) {
         flag = await false;
       }
     });*/
-    if(kotae === data.value){
+    index = data.i;
+    console.log(index);
+    if(answer[index].answer === data.value || answer[index].keyword === data.value){
       flag = true;
+      score += 10;
     }else{
       flag = false;
     }
     io.emit("userInfo", {
       //email: data.email,
       value: data.value,
-      score: data.score,
+      score: score,
       flag: flag,
-      nick: data.nick
+      nick: data.nick,
+      id: data.id
     });
   });
 });

@@ -8,27 +8,31 @@
 <button id="unmuteButton" class="form-control btn btn" >소리가 나오지 않는다면 이곳을 눌러주세요(다시재생 포함)</button>
 <br />
 <hr>
-<div class="container overflow-auto" style="height: 300px">
-  <div id="messages" class="alert alert-secondary" role="alert" style="text-decoration: underline;">
+<div id="box" class="container overflow-auto" style="height: 300px">
+  <div id="messages" class="alert alert-secondary" role="alert" style="text-decoration: underline; overflow: auto;">
 
   </div>
 </div>
 <div class="margin-s10"></div>
 
-<form>
+<form onsubmit="return false">
   <div class="form-group">
-    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder="이곳에 채팅을 입력하세요">
+    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder="이곳에 채팅을 입력하세요"
+    onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('sendButton').click()" >
+
   </div>
-  <button type="button" value="send" onclick="send();" class="form-control btn btn-dark">전송</button>
+  <input type="button" id="sendButton" value="send" onclick="send()" class="form-control btn btn-dark">
 </form>
 
 <div class="row">
   <% @room.players.each do |player| %>
     <div class="col-sm-4 margin-top-10">
       <div class="card border-info overflow-auto">
-        <div class="card-body">
+        <div id="card" class="card-body">
           <h5 class="card-title"><%= player.user.nickName %></h5>
-          <p class="card-text float-right">1 points</p>
+    <!--      <h5 id="nick" class="card-title"></h5> -->
+          <p id="<%= player.user.id %>" class="card-text float-right">0 Points</p>
         </div>
       </div>
     </div>
@@ -54,6 +58,9 @@
     //    after the API code downloads.
     var player;
     var nowSong;
+    var stArr;
+    var url;
+    var timeLimit = "<%= @room.limitTime %>";
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -62,12 +69,13 @@
             //videoId: 'VNNsrjm6Nig', // 여기하고
             videoId: `${nowSong}`,
             playerVars: {
-                'start': 10, // 여기 수정
+                'start': stArr[0], // 여기 수정
 
                 // 무한반복용 루프 설정도구. 복잡해서 뺐음
                 'loop' : 1,
                 //'playlist': 'VNNsrjm6Nig'
-                'playlist': `${nowSong}`
+                'playlist': `${nowSong}`,
+                'end': parseInt(stArr[0]) + parseInt(timeLimit)
             },
             events: {
                 'onReady': onPlayerReady,
@@ -99,20 +107,46 @@
         player.playVideo();
     });
 
+    setTimeout(() => {
+      messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
+      messages.appendChild(document.createElement("br"));
+    }, 1000);
+
+    setTimeout(() => {
+      messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
+      messages.appendChild(document.createElement("br"));
+    }, 2000);
+    setTimeout(() => {
+      messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
+      messages.appendChild(document.createElement("br"));
+    }, 3000);
+
     // Socket
 
     var socket = io.connect("http://localhost:4000");
-    //var userInfo = "<%=current_user.email%>";
-    var nick = "<%=current_user.nickName%>"
+    var nick = "<%=current_user.nickName%>";
+    var score = 0;
+    var currentId = "<%=current_user.id%>";
+    var players = "<%=@players%>";
+
+    var res = players.replace(/[^0-9]/g, "");
+    var result = res.split("");
 
     function send() {
       var value = document.getElementById("text").value;
+      var pi = url.findIndex(i => i == nowSong);
       socket.emit("sendUser", {
-        //email: userInfo,
         value: value,
-        score: 0,
-        nick: nick
+        nick: nick,
+        id: currentId,
+        i: pi
       });
+      document.getElementById('text').value = null;
+      //이벤트 발생하면 인풋태그 비우기
+      var move = document.getElementById('box');
+      if(move.scrollHeight > 0) {
+        move.scrollTop = move.scrollHeight;
+      }//자동스크롤
     }
 
     socket.on("userInfo", (data) => {
@@ -120,15 +154,30 @@
       var text = document.createTextNode(`${data.nick} : ${data.value}`);
       messages.appendChild(text);
       messages.appendChild(document.createElement("br"));
-
+      //채팅
       if(data.flag === true){
-        var index = queArr.findIndex(i => i.src == nowSong);
+        //document.getElementById('0').innerHTML = `${data.nick} - ${data.score}`;
+        //document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
+        if(data.nick === nick) {
+          document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
+        }else{
+          var search = result.indexOf(data.id);
+          console.log(search, data.id, players);
+          document.getElementById(search+1).innerHTML = `${data.nick} - ${data.score}`;
+        }
+        //스코어 변경
+        var index = url.findIndex(i => i == nowSong);
+        nowSong = url[index+1];
         setTimeout(() => {
-          player.loadVideoById(queArr[index+1].src);
+          player.loadVideoById({
+            'videoId': url[index+1],
+            'startSeconds': stArr[index+1],
+            'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
+          });
+
         }, 4000);
-
-
-        messages.appendChild(document.createTextNode(`${data.email}님 정답입니다!`));
+        //다음곡 넘기기
+        messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
         messages.appendChild(document.createElement("br"));
         setTimeout(() => {
           messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
@@ -144,26 +193,17 @@
           messages.appendChild(document.createElement("br"));
         }, 3000);
       }
+      //시스템메시지
+
     });
 
     socket.on('answer', (data) => {
-      queArr = data.queArr;
-      nowSong = data.queArr[0].src;
+      //queArr = data.queArr;
+      //nowSong = data.queArr[0].src;
       //1번만 발생
-
-      setTimeout(() => {
-        messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
-        messages.appendChild(document.createElement("br"));
-      }, 1000);
-
-      setTimeout(() => {
-        messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
-        messages.appendChild(document.createElement("br"));
-      }, 2000);
-      setTimeout(() => {
-        messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
-        messages.appendChild(document.createElement("br"));
-      }, 3000);
+      url = data.url;
+      nowSong = data.url[0];
+      stArr = data.startTime;
     });
 
 
