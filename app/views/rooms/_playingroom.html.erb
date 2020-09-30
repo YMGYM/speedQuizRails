@@ -1,4 +1,4 @@
-
+<!--<p hidden id="ViewTimer"></p>-->
 <div class="row" style="height: 50px"></div>
 <h1>#<%= @room.id %> / <%= @room.title %></h1>
 <p><%= Question.find(@room.question).title %></p>
@@ -165,4 +165,6 @@
         messages.appendChild(document.createElement("br"));
       }, 3000);
     });
+
+
 </script>
