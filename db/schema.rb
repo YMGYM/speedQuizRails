@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_113808) do
 
   create_table "rooms", force: :cascade do |t|
     t.string "title"
-    t.integer "question"
+    t.integer "question_id", null: false
     t.integer "questionNumber"
     t.integer "limitTime"
     t.boolean "isSecret"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_113808) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "nowPlaying"
+    t.index ["question_id"], name: "index_rooms_on_question_id"
   end
 
   create_table "users", force: :cascade do |t|
