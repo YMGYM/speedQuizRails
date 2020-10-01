@@ -1,9 +1,9 @@
 <!--<p hidden id="ViewTimer"></p>-->
 <div class="row" style="height: 50px"></div>
 <h1>#<%= @room.id %> / <%= @room.title %></h1>
-<p><%= Question.find(@room.question).title %></p>
+<p><%= @room.question.title %></p>
 <hr>
-<h5><%= Question.find(@room.question).description %></h5>
+<h5><%= @room.question.description %></h5>
 <hr>
 <p>문제 수 : <%= @room.questionNumber %></p>
 <p>제한시간 : <%= @room.limitTime %></p>

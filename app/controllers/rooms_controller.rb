@@ -18,8 +18,10 @@ class RoomsController < ApplicationController
       redirect_to rooms_path, flash: {alert: "이미 방이 있는 경우 생성할 수 없어요"}
       return
     end
+    question_id =  params.require(:room).permit(:question)['question'].to_i
+    question = Question.find(question_id)
 
-    room = Room.new(rooms_params)
+    room = question.rooms.new(rooms_params)
     room.nowPlaying = false
 
     if room.isSecret == false
@@ -136,8 +138,7 @@ class RoomsController < ApplicationController
   end
   private
   def rooms_params
-    params.require(:room).permit(:title, :question, :questionNumber, :limitTime, :isSecret, :password)
-
+    params.require(:room).permit(:title, :questionNumber, :limitTime, :isSecret, :password)
   end
 
   def room_authenticate
