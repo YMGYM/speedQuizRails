@@ -65,6 +65,10 @@
     var url;
     var timeLimit = "<%= @room.limitTime %>";
 
+    setInterval(() => {
+      timeLimit -= 1;
+    }, 1000);
+
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             height: '360',
@@ -78,7 +82,7 @@
                 'loop' : 1,
                 //'playlist': 'VNNsrjm6Nig'
                 'playlist': `${nowSong}`,
-                'end': parseInt(stArr[0]) + parseInt(timeLimit)
+                'end': parseInt(stArr[0]) + parseInt("<%= @room.limitTime %>")
             },
             events: {
                 'onReady': onPlayerReady,
@@ -158,9 +162,7 @@
       messages.appendChild(text);
       messages.appendChild(document.createElement("br"));
       //채팅
-      if(data.flag === true){
-        //document.getElementById('0').innerHTML = `${data.nick} - ${data.score}`;
-        //document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
+      if(data.flag === true || timeLimit < 0){
         if(data.nick === nick) {
           document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
         }else{
@@ -177,8 +179,8 @@
             'startSeconds': stArr[index+1],
             'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
           });
-
         }, 4000);
+        timeLimit = "<%= @room.limitTime %>";
         //다음곡 넘기기
         messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
         messages.appendChild(document.createElement("br"));
@@ -195,6 +197,10 @@
           messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
           messages.appendChild(document.createElement("br"));
         }, 3000);
+        var move = document.getElementById('box');
+        if(move.scrollHeight > 0) {
+          move.scrollTop = move.scrollHeight;
+        }//자동스크롤
       }
       //시스템메시지
 
