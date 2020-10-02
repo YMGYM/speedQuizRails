@@ -50,6 +50,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
+    var player;
+    var nowSong;
+    var stArr;
+    var url;
+    var timeLimit = "<%= @room.limitTime %>";
+    var socket = io.connect("http://localhost:4000");
+    var nick = "<%=current_user.nickName%>";
+    var score = 0;
+    var currentId = "<%=current_user.id%>";
+    var players = "<%=@players%>";
+    var res = players.replace(/[^0-9]/g, "");
+    var result = res.split("");
+    var move = document.getElementById("box");
+    var questionInfo = "<%= @room.question.title %>";
+
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
 
@@ -59,26 +74,18 @@
 
     // 3. This function creates an <iframe> (and YouTube player)
     //    after the API code downloads.
-    var player;
-    var nowSong;
-    var stArr;
-    var url;
-    var timeLimit = "<%= @room.limitTime %>";
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             height: '360',
             width: '640',
-            //videoId: 'VNNsrjm6Nig', // 여기하고
             videoId: `${nowSong}`,
             playerVars: {
                 'start': stArr[0], // 여기 수정
-
                 // 무한반복용 루프 설정도구. 복잡해서 뺐음
                 'loop' : 1,
-                //'playlist': 'VNNsrjm6Nig'
                 'playlist': `${nowSong}`,
-                'end': parseInt(stArr[0]) + parseInt(timeLimit)
+                'end': parseInt(stArr[0]) + parseInt("<%= @room.limitTime %>")
             },
             events: {
                 'onReady': onPlayerReady,
@@ -86,8 +93,6 @@
             }
         });
     }
-
-
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
@@ -105,7 +110,6 @@
     function stopVideo() {
         player.unMute();
     }
-
     unmuteButton.addEventListener('click', function() {
         player.playVideo();
     });
@@ -123,17 +127,62 @@
       messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
       messages.appendChild(document.createElement("br"));
     }, 3000);
+    /*
+    setTimeout(() => {
+      player.playVideo();
+      console.log("Hi");
+    }, 4000);
+    */
+    setInterval(() => {
+      timeLimit -= 1;
+      console.log(timeLimit);
+    }, 1000);
 
-    // Socket
+// Socket
+    socket.emit('question', questionInfo);
 
-    var socket = io.connect("http://localhost:4000");
-    var nick = "<%=current_user.nickName%>";
-    var score = 0;
-    var currentId = "<%=current_user.id%>";
-    var players = "<%=@players%>";
+    setInterval(() => {
+      var index = url.findIndex(i => i == nowSong);
+      if(timeLimit < 0) {
+        nowSong = url[index+1];
+        setTimeout(() => {
+          player.loadVideoById({
+            'videoId': url[index+1],
+            'startSeconds': stArr[index+1],
+            'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
+          });
+        }, 4000);
+        timeLimit = "<%= @room.limitTime %>";
+        messages.appendChild(document.createTextNode(`제한시간이 초과되었습니다!`));
+        messages.appendChild(document.createElement("br"));
+        setTimeout(() => {
+          messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
+          messages.appendChild(document.createElement("br"));
+          if(move.scrollHeight > 0) {
+            move.scrollTop = move.scrollHeight;
+          }//자동스크롤
+        }, 1000);
+        setTimeout(() => {
+          messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
+          messages.appendChild(document.createElement("br"));
+          if(move.scrollHeight > 0) {
+            move.scrollTop = move.scrollHeight;
+          }//자동스크롤
+        }, 2000);
+        setTimeout(() => {
+          messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
+          messages.appendChild(document.createElement("br"));
+          if(move.scrollHeight > 0) {
+            move.scrollTop = move.scrollHeight;
+          }//자동스크롤
+        }, 3000);
+      }
+      //시간초과되었을 때 다음으로 넘김
 
-    var res = players.replace(/[^0-9]/g, "");
-    var result = res.split("");
+      if(index === url.length){
+        alert("문제가 모두 끝났습니다!");
+      }
+    }, 1000);
 
     function send() {
       var value = document.getElementById("text").value;
@@ -151,7 +200,7 @@
         move.scrollTop = move.scrollHeight;
       }//자동스크롤
     }
-
+    //채팅 전송 이벤트 발생
     socket.on("userInfo", (data) => {
       var messages = document.getElementById("messages");
       var text = document.createTextNode(`${data.nick} : ${data.value}`);
@@ -159,8 +208,6 @@
       messages.appendChild(document.createElement("br"));
       //채팅
       if(data.flag === true){
-        //document.getElementById('0').innerHTML = `${data.nick} - ${data.score}`;
-        //document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
         if(data.nick === nick) {
           document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
         }else{
@@ -177,37 +224,45 @@
             'startSeconds': stArr[index+1],
             'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
           });
-
         }, 4000);
+        timeLimit = "<%= @room.limitTime %>";
         //다음곡 넘기기
         messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
         messages.appendChild(document.createElement("br"));
         setTimeout(() => {
           messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
           messages.appendChild(document.createElement("br"));
+          if(move.scrollHeight > 0) {
+            move.scrollTop = move.scrollHeight;
+          }//자동스크롤
         }, 1000);
-
         setTimeout(() => {
           messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
           messages.appendChild(document.createElement("br"));
+          if(move.scrollHeight > 0) {
+            move.scrollTop = move.scrollHeight;
+          }//자동스크롤
         }, 2000);
         setTimeout(() => {
           messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
           messages.appendChild(document.createElement("br"));
+          if(move.scrollHeight > 0) {
+            move.scrollTop = move.scrollHeight;
+          }//자동스크롤
         }, 3000);
+        if(move.scrollHeight > 0) {
+          move.scrollTop = move.scrollHeight;
+        }//자동스크롤
       }
       //시스템메시지
-
     });
-
+    //채팅 오갈때마다 검사
     socket.on('answer', (data) => {
-      //queArr = data.queArr;
-      //nowSong = data.queArr[0].src;
-      //1번만 발생
       url = data.url;
       nowSong = data.url[0];
       stArr = data.startTime;
     });
+    //시작할 시 문제정보 받음
 
 
 </script>
