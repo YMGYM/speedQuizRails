@@ -17,6 +17,8 @@ var answer = [];
 var url = [];
 var startTime = [];
 var question;
+var rowArr = [];
+var keyword = [];
 
 /*
 client.keys('*', (err, keys) => {
@@ -50,12 +52,17 @@ io.sockets.on("connection", function(socket) {
     fs.createReadStream(question)
       .pipe(csv())
       .on('data', (row) => {
-        answer.push({answer: row.answer, keyword: row.answerKeyword});
-        url.push(row.src);
-        startTime.push(row.startTime);
+        rowArr.push(row);
       })
       .on('end', () => {
-        console.log('CSV file successfully processed');
+        //console.log('CSV file successfully processed');
+        shuffle(rowArr);
+        for(var i in rowArr) {
+          answer.push({answer: rowArr[i].answer});
+          keyword.push({keyword: rowArr[i].answerKeyword});
+          url.push(rowArr[i].src);
+          startTime.push(rowArr[i].startTime);
+        }
         io.emit('answer', {
           url: url,
           startTime: startTime
@@ -65,15 +72,18 @@ io.sockets.on("connection", function(socket) {
 
   socket.on("sendUser", (data) => {
     index = data.i;
-    console.log(index);
-    if(answer[index].answer === data.value || answer[index].keyword === data.value){
+    var key = keyword[index].keyword.toString();
+    console.log(key);
+    if(key.indexOf(' ') !== -1){
+      var keyArray = key.split(' ');
+    }
+    if(answer[index].answer === data.value || key === data.value && data.value !== '' || keyArray.indexOf(key.value) !== -1){
       flag = true;
       score += 10;
     }else{
       flag = false;
     }
     io.emit("userInfo", {
-      //email: data.email,
       value: data.value,
       score: score,
       flag: flag,
@@ -82,3 +92,12 @@ io.sockets.on("connection", function(socket) {
     });
   });
 });
+
+function shuffle(array) {
+  for(var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}

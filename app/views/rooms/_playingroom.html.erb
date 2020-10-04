@@ -64,6 +64,7 @@
     var result = res.split("");
     var move = document.getElementById("box");
     var questionInfo = "<%= @room.question.title %>";
+    var questionLimit = "<%= @room.questionNumber %>";
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -92,24 +93,25 @@
                 'onStateChange': onPlayerStateChange,
             }
         });
+        console.log(stArr);
     }
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
         event.target.mute();
         event.target.playVideo();
-
     }
 
     // 5. The API calls this function when the player's state changes.
     //    The function indicates that when playing a video (state=1),
     //    the player should play for six seconds and then stop.
     function onPlayerStateChange(event) {
-        setTimeout(stopVideo, 3000);
+        setTimeout(stopVideo, 4000);
     }
     function stopVideo() {
         player.unMute();
     }
+
     unmuteButton.addEventListener('click', function() {
         player.playVideo();
     });
@@ -127,12 +129,7 @@
       messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
       messages.appendChild(document.createElement("br"));
     }, 3000);
-    /*
-    setTimeout(() => {
-      player.playVideo();
-      console.log("Hi");
-    }, 4000);
-    */
+
     setInterval(() => {
       timeLimit -= 1;
       console.log(timeLimit);
@@ -179,7 +176,7 @@
       }
       //시간초과되었을 때 다음으로 넘김
 
-      if(index === url.length){
+      if(index === questionLimit || index === stArr.length){
         alert("문제가 모두 끝났습니다!");
       }
     }, 1000);
@@ -263,6 +260,4 @@
       stArr = data.startTime;
     });
     //시작할 시 문제정보 받음
-
-
 </script>
