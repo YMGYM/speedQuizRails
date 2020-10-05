@@ -133,7 +133,8 @@ class RoomsController < ApplicationController
 
   def startGame
     room = current_user.room
-    room.update(nowPlaying: true)
+    stat = !room.nowPlaying
+    room.update(nowPlaying: stat)
     redirect_to room
   end
   private
