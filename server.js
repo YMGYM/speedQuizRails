@@ -77,7 +77,7 @@ io.sockets.on("connection", function(socket) {
     if(key.indexOf(' ') !== -1){
       var keyArray = key.split(' ');
     }
-    if(answer[index].answer === data.value || key === data.value && data.value !== '' || keyArray.indexOf(key.value) !== -1){
+    if(answer[index].answer === data.value || key === data.value && data.value !== ''){
       flag = true;
       score += 10;
     }else{
