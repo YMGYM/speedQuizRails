@@ -152,5 +152,10 @@ class RoomsController < ApplicationController
       redirect_to room_path(current_user.room.id), flash: {alert: "기존에 플레이하던 방으로 이동됩니다."}
       return
     end
+
+    if (current_user.room.nowPlaying)
+      redirect_to rooms_path, flash: {alert: "게임 중인 방에는 들어갈 수 없어요.."}
+      return
+    end
   end
 end

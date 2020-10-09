@@ -42,7 +42,7 @@ io.sockets.on("connection", function(socket) {
       case "추억을 불러 일으키는 게임들.. (난이도 중)":
         question = './Questions/games.csv';
         break;
-      case "아는듯 모르는... 긴가민가한 광고들 (난이도 하)":
+      case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
         question = './Questions/advertise.csv';
         break;
       case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
