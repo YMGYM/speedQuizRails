@@ -68,11 +68,11 @@ io.sockets.on("connection", function(socket) {
           keyword: keyword,
           answer: answer
         });//'answer'이벤트 호출
-        //answer.length = 0;
-        //keyword.length = 0;
-        //url.length = 0;
-        //startTime.length = 0;
-        //rowArr.length = 0;
+        answer.length = 0;
+        keyword.length = 0;
+        url.length = 0;
+        startTime.length = 0;
+        rowArr.length = 0;
       });
   });
 
@@ -89,20 +89,17 @@ io.sockets.on("connection", function(socket) {
       //정답이랑 같거나, 키워드랑 같거나, 키워드의 배열에 채팅 값이 있으면 실행
       flag = true; //클라이언트에 넘길 flag값
       score += 10; //스코어를 +10
-      console.log("정답판정");
     }else if(keyArray.length !== 0 && data.value !== ''){
       keyArray.forEach((i) => {
         if(i === data.value){
           flag = true; //클라이언트에 넘길 flag값
           score += 10; //스코어를 +10
-          console.log("1번째 판정");
         }
       });
     }else if(key !== '' && data.value !== '' && key.indexOf(' ') === -1){
       if(key === data.value) {
         flag = true; //클라이언트에 넘길 flag값
         score += 10; //스코어를 +10
-        console.log("2번째 판정");
       }
     }
     else{
