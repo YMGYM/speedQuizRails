@@ -9,7 +9,7 @@
 
 <% if @user.isMaster == true %>
   <div class="row">
-    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-outline-dark col-sm-5", method: :post %>
+    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-outline-dark col-sm-5", method: :post, "data-turbolinks": false %>
     <div class="col-sm-2"></div>
     <%= link_to '방 나가기', '/roomquit', class: "btn btn-lg btn-secondary col-sm-5", method: :delete %>
   </div>
@@ -43,18 +43,27 @@
 
 </div>
 
+<p id="ViewTimer"></p>
+
 <script>
-    var SetTime = 20;		// 최초 설정 시간(기본 : 초)
+    var SetTime = 60;		// 최초 설정 시간(기본 : 초)
 
-    function msg_time() {
-        SetTime--;
+    function msg_time() {	// 1초씩 카운트
 
-        if (SetTime < 0) {
+        m = Math.floor(SetTime % 60) + "초";	// 남은 시간 계산
+
+        var msg = "<font color='red'>" + m + "</font> 후에 페이지가 새로고침됩니다.";
+
+        document.all.ViewTimer.innerHTML = msg;		// div 영역에 보여줌
+
+        SetTime--;					// 1초씩 감소
+
+        if (SetTime < 0) {			// 시간이 종료 되었으면..
             location.reload();
         }
 
     }
 
     function TimerStart(){tid=setInterval('msg_time()',1000) }
-    document.addEventListener("DOMContentLoaded", TimerStart());
+    document.addEventListener("turbolinks:load", TimerStart());
 </script>
