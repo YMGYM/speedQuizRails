@@ -1,4 +1,5 @@
 <!--<p hidden id="ViewTimer"></p>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <div class="row" style="height: 50px"></div>
 <h1>#<%= @room.id %> / <%= @room.title %></h1>
 <p><%= @room.question.title %></p>
@@ -46,9 +47,6 @@
   <div id="player"></div>
 </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
     var player;
     var nowSong;
@@ -65,6 +63,9 @@
     var move = document.getElementById("box");
     var questionInfo = "<%= @room.question.title %>";
     var questionLimit = "<%= @room.questionNumber %>";
+    var roomId = "<%= @room.id %>";
+    var keyword;
+    var answer;
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -82,18 +83,19 @@
             width: '640',
             videoId: `${nowSong}`,
             playerVars: {
-                'start': stArr[0], // 여기 수정
+                //'start': stArr[0], // 여기 수정
                 // 무한반복용 루프 설정도구. 복잡해서 뺐음
+                'start': 1,
                 'loop' : 1,
                 'playlist': `${nowSong}`,
-                'end': parseInt(stArr[0]) + parseInt("<%= @room.limitTime %>")
+                //'end': parseInt(stArr[0]) + parseInt("<%= @room.limitTime %>")
+                'end': 100
             },
             events: {
                 'onReady': onPlayerReady,
                 'onStateChange': onPlayerStateChange,
             }
         });
-        console.log(stArr);
     }
 
     // 4. The API will call this function when the video player is ready.
@@ -132,12 +134,14 @@
 
     setInterval(() => {
       timeLimit -= 1;
-      console.log(timeLimit);
     }, 1000);
 
 // Socket
-    socket.emit('question', questionInfo);
 
+    socket.emit('question',{
+      questionInfo: questionInfo,
+      roomId: roomId
+    });
     setInterval(() => {
       var index = url.findIndex(i => i == nowSong);
       if(timeLimit < 0) {
@@ -188,7 +192,10 @@
         value: value,
         nick: nick,
         id: currentId,
-        i: pi
+        i: pi,
+        roomId: roomId,
+        keyword: keyword,
+        answer: answer
       });
       document.getElementById('text').value = null;
       //이벤트 발생하면 인풋태그 비우기
@@ -209,19 +216,19 @@
           document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
         }else{
           var search = result.indexOf(data.id);
-          console.log(search, data.id, players);
           document.getElementById(search+1).innerHTML = `${data.nick} - ${data.score}`;
         }
         //스코어 변경
         var index = url.findIndex(i => i == nowSong);
         nowSong = url[index+1];
+        //서버에서
         setTimeout(() => {
           player.loadVideoById({
             'videoId': url[index+1],
             'startSeconds': stArr[index+1],
             'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
           });
-        }, 4000);
+        }, 4000); //남은 엔드타임 전부
         timeLimit = "<%= @room.limitTime %>";
         //다음곡 넘기기
         messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
@@ -258,6 +265,9 @@
       url = data.url;
       nowSong = data.url[0];
       stArr = data.startTime;
+      keyword = data.keyword;
+      answer = data.answer;
+      console.log(data.answer);
     });
     //시작할 시 문제정보 받음
 </script>
