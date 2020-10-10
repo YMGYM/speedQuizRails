@@ -13,7 +13,7 @@
         </div>
 
         <div class="col-2 col-sm-1">
-          <%= submit_tag "검색", class:"btn btn-secondary float-right" %>
+          <%= submit_tag "검색", class:"btn btn-secondary float-right", "data-turbolinks":false %>
         </div>
       </div>
     <% end %>
@@ -60,12 +60,12 @@
 
   <script>
 
-      var SetTime = 30;		// 최초 설정 시간(기본 : 초)
+      var SetTime = 60;		// 최초 설정 시간(기본 : 초)
 
       function msg_time() {	// 1초씩 카운트
-
+          //
           // m = Math.floor(SetTime % 60) + "초";	// 남은 시간 계산
-
+          //
           // var msg = "<font color='red'>" + m + "</font> 후에 페이지가 새로고침됩니다.";
           //
           // document.all.ViewTimer.innerHTML = msg;		// div 영역에 보여줌
@@ -79,6 +79,6 @@
       }
 
       function TimerStart(){tid=setInterval('msg_time()',1000) }
-      document.addEventListener("DOMContentLoaded", TimerStart());
+      document.addEventListener("turbolinks:load", TimerStart());
   </script>
 </div>

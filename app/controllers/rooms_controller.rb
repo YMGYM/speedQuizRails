@@ -100,7 +100,7 @@ class RoomsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       redirect_to rooms_path, flash: {alert: "없는 번호입니다!"}
     else
-      redirect_to room_path(room.id)
+      redirect_to room
     end
   end
 
@@ -153,9 +153,9 @@ class RoomsController < ApplicationController
       return
     end
 
-    if (current_user.room.nowPlaying)
-      redirect_to rooms_path, flash: {alert: "게임 중인 방에는 들어갈 수 없어요.."}
-      return
-    end
+    # if (current_user.room.nowPlaying)
+    #   redirect_to rooms_path, flash: {alert: "게임 중인 방에는 들어갈 수 없어요.."}
+    #   return
+    # end
   end
 end
