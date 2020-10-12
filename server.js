@@ -85,7 +85,6 @@ io.sockets.on("connection", function(socket) {
       keyArray = key.split(' ');
     } //중간에 공백이 있는 경우에 공백을 중심으로 문자열을 자르고 배열에 넣음
     if(data.answer[index].answer === data.value){
-      //|| keyArray.indexOf(key.value) !== -1
       //정답이랑 같거나, 키워드랑 같거나, 키워드의 배열에 채팅 값이 있으면 실행
       flag = true; //클라이언트에 넘길 flag값
       score += 10; //스코어를 +10
@@ -105,7 +104,6 @@ io.sockets.on("connection", function(socket) {
     else{
       flag = false;
     }
-    console.log(key, keyArray, data.answer[index].answer);
     io.to(data.roomId).emit("userInfo", {
       value: data.value,
       score: score,
