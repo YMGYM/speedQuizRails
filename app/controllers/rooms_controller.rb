@@ -100,7 +100,7 @@ class RoomsController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       redirect_to rooms_path, flash: {alert: "없는 번호입니다!"}
     else
-      redirect_to room_path(room.id)
+      redirect_to room
     end
   end
 

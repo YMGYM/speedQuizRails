@@ -11,9 +11,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% if controller.controller_name == 'rooms' && (controller.action_name == 'index' || controller.action_name == 'show')%>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>
+    <% end %>
   </head>
 
   <body>
+
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="<%= rooms_path %>">요미퀴즈</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +28,6 @@
           <a class="nav-link active" href="<%= root_path %>">Home<span class="sr-only">(current)</span></a>
           <a class="nav-link" href="<% if current_user %><% if current_user.room %> <%= room_path(current_user.room.id) %><% else %><%= rooms_path %> <%end %><% else %><%= rooms_path %><%end %>" data-turbolinks="false">게임하기</a>
           <% if current_user %>
-<!--            <a class="nav-link" href="<%#= destroy_user_sdession %>">로그아웃</a>-->
                 <%= link_to '로그아웃', destroy_user_session_path,  method: :delete, class: "nav-link" %>
           <% else %>
               <%= link_to '로그인', new_user_session_path,class: "nav-link" %>
