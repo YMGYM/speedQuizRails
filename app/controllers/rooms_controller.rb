@@ -137,6 +137,7 @@ class RoomsController < ApplicationController
     room.update(nowPlaying: stat)
     redirect_to room
   end
+
   private
   def rooms_params
     params.require(:room).permit(:title, :questionNumber, :limitTime, :isSecret, :password)
