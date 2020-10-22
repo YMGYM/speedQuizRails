@@ -64,10 +64,11 @@
     var result = res.split("");
     var move = document.getElementById("box");
     var questionInfo = "<%= @room.question.title %>";
-    var questionLimit = "<%= @room.questionNumber %>";
+    var questionLimit = parseInt("<%= @room.questionNumber %>");
     var roomId = "<%= @room.id %>";
     var keyword;
     var answer;
+    var index;
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -139,13 +140,15 @@
     }, 1000);
 
 // Socket
-
-    socket.emit('question',{
-      questionInfo: questionInfo,
-      roomId: roomId
+    socket.on('question', () => {
+      socket.emit('question',{
+        questionInfo: questionInfo,
+        roomId: roomId
+      });
     });
+
     setInterval(() => {
-      var index = url.findIndex(i => i == nowSong);
+      index = url.findIndex(i => i == nowSong);
       if(timeLimit < 0) {
         nowSong = url[index+1];
         setTimeout(() => {
@@ -181,11 +184,10 @@
         }, 3000);
       }
       //시간초과되었을 때 다음으로 넘김
-
       if(index === questionLimit || index === stArr.length){
         alert("문제가 모두 끝났습니다!");
         window.location.href = "http://localhost:3000";
-      }
+      }//문제 다 풀면 리다이렉트
     }, 1000);
 
     function send() {
@@ -206,6 +208,7 @@
       if(move.scrollHeight > 0) {
         move.scrollTop = move.scrollHeight;
       }//자동스크롤
+
     }
     //채팅 전송 이벤트 발생
     socket.on("userInfo", (data) => {
@@ -219,12 +222,12 @@
           document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
         }else{
           var search = result.indexOf(data.id);
-          document.getElementById(search+1).innerHTML = `${data.nick} - ${data.score}`;
+          document.getElementById(result[search]).innerHTML = `${data.nick} - ${data.score}`;
         }
         //스코어 변경
         var index = url.findIndex(i => i == nowSong);
         nowSong = url[index+1];
-        //서버에서
+
         setTimeout(() => {
           player.loadVideoById({
             'videoId': url[index+1],

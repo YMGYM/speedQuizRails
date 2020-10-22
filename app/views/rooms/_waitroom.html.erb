@@ -19,7 +19,25 @@
   </div>
 <% end %>
 
-<div class="row" style="height: 100px"> </div>
+<hr>
+<div id="box" class="container overflow-auto" style="height: 300px">
+  <div id="messages" class="alert alert-secondary" role="alert" style="text-decoration: underline; overflow: auto;">
+
+  </div>
+</div>
+<div class="margin-s10"></div>
+
+<form onsubmit="return false">
+  <div class="form-group">
+    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder="이곳에 채팅을 입력하세요"
+    onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('sendButton').click()" >
+
+  </div>
+  <input type="button" id="sendButton" value="send" onclick="send()" class="form-control btn btn-dark">
+</form>
+
+<div class="row" style="height: 50px"> </div>
 <div class="row">
   <% @room.players.each do |player| %>
     <div class="col-sm-4 margin-top-10">
@@ -46,7 +64,56 @@
 <p id="ViewTimer"></p>
 
 <script>
+    var socket = io.connect("http://localhost:4000");
     var SetTime = 60;		// 최초 설정 시간(기본 : 초)
+    var roomId = `waiting${<%= @room.id %>}`;
+    var nick = "<%=current_user.nickName%>";
+    var currentId = "<%=current_user.id%>";
+    var playingFlag = "<%= @room.nowPlaying %>";
+
+    function send() {
+      var value = document.getElementById("text").value;
+      socket.emit("sendUserWaiting", {
+        value: value,
+        nick: nick,
+        roomId: roomId
+      });
+      document.getElementById('text').value = null;
+      //이벤트 발생하면 인풋태그 비우기
+      var move = document.getElementById('box');
+      if(move.scrollHeight > 0) {
+        move.scrollTop = move.scrollHeight;
+      }//자동스크롤
+    }
+
+    socket.emit('joinRoom', roomId);
+
+    socket.on('chat', (data) => {
+      var messages = document.getElementById("messages");
+      var text = document.createTextNode(`${data.nick} : ${data.value}`);
+      messages.appendChild(text);
+      messages.appendChild(document.createElement("br"));
+    });
+
+    setInterval(() => {
+      socket.emit('playing', {
+        roomId: roomId,
+        playingFlag: playingFlag
+      });
+      console.log(playingFlag);
+    }, 1000);
+
+    socket.on('playing', (data) => {
+      if(data.playingFlag === true){
+        if (self.name != 'reload') {
+         self.name = 'reload';
+         self.location.reload(true);
+        }
+        else{
+          self.name = '';
+        }
+      }
+    });
 
     function msg_time() {	// 1초씩 카운트
 

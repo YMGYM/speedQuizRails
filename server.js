@@ -13,78 +13,111 @@ io.adapter(redis({
 }));
 //var flag = false;
 var user = [];
-var index = 0;
+var indexNum = 0;
 var question;
 var keyword = [];
 var nowSong;
 var timeLimit;
+
 var roomId;
+var rowArr = [];
+var answer = [];
+var keyword = [];
+var url = [];
+var startTime = [];
+var roomIdArray = [];
 
 io.sockets.on("connection", function(socket) {
   var score = 0;
+
   socket.on('roomInfo', (data) => {
     //roomId = data;
     socket.join(data);
   });
 
-  socket.on('question', (data) => {
-    var rowArr = [];
-    var answer = [];
-    var keyword = [];
-    var url = [];
-    var startTime = [];
-    switch(data.questionInfo){
-      case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
-        question = './Questions/girlsIdol.csv';
-        break;
-      case "추억을 불러 일으키는 게임들.. (난이도 중)":
-        question = './Questions/games.csv';
-        break;
-      case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
-        question = './Questions/advertise.csv';
-        break;
-      case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
-        question = './Questions/animesong.csv';
-        break;
-    } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
-    fs.createReadStream(question)
-      .pipe(csv())
-      .on('data', (row) => {
-        rowArr.push(row);
-      })//해당 question에 해당하는 csv를 읽고 배열에 넣음
-      .on('end', () => {
-        //console.log('CSV file successfully processed');
-        shuffle(rowArr); //csv를 읽은 배열을 섞음
-        for(var i in rowArr) {
-          answer.push({answer: rowArr[i].answer});
-          keyword.push({keyword: rowArr[i].answerKeyword});
-          url.push(rowArr[i].src);
-          startTime.push(rowArr[i].startTime);
-        }//각각의 key값을 배열로 만들어 넣음
-        socket.join(data.roomId);
-        io.to(data.roomId).emit('answer', {
-          url: url,
-          startTime: startTime,
-          keyword: keyword,
-          answer: answer
-        });//'answer'이벤트 호출
-        answer.length = 0;
-        keyword.length = 0;
-        url.length = 0;
-        startTime.length = 0;
-        rowArr.length = 0;
+  async function socketFunction(callback){
+    io.emit('question');
+    await new Promise(resolve => {
+      socket.on('question', data => {
+        resolve(data);
+
+        roomId = data.roomId;
+        switch(data.questionInfo){
+          case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
+            question = './Questions/girlsIdol.csv';
+            break;
+          case "추억을 불러 일으키는 게임들.. (난이도 중)":
+            question = './Questions/games.csv';
+            break;
+          case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
+            question = './Questions/advertise.csv';
+            break;
+          case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
+            question = './Questions/animesong.csv';
+            break;
+        } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
+        fs.createReadStream(question)
+          .pipe(csv())
+          .on('data', (row) => {
+            rowArr.push(row);
+          })//해당 question에 해당하는 csv를 읽고 배열에 넣음
+          .on('end', () => {
+            //console.log('CSV file successfully processed');
+            shuffle(rowArr); //csv를 읽은 배열을 섞음
+            if(roomIdArray.findIndex(i => i.id === data.roomId) === -1){
+              roomIdArray.push({id: data.roomId});
+              for(var i in rowArr) {
+                answer.push({answer: rowArr[i].answer});
+                keyword.push({keyword: rowArr[i].answerKeyword});
+                url.push(rowArr[i].src);
+                startTime.push(rowArr[i].startTime);
+              }//각각의 key값을 배열로 만들어 넣음
+            }
+
+            socket.join(data.roomId);
+
+            callback();
+        });
       });
+    });
+  }
+
+  socketFunction(async() => {
+    await io.to(roomId).emit('answer', {
+      url: url,
+      startTime: startTime,
+      keyword: keyword,
+      answer: answer
+    });//'answer'이벤트 호출
+  });
+
+  socket.on('sendUserWaiting', (data) => {
+    io.to(data.roomId).emit('chat', {
+      value: data.value,
+      nick: data.nick
+    });
+  });
+
+  socket.on('joinRoom', (data) => {
+    socket.join(data);
+  });
+
+  socket.on('playing', (data) => {
+    io.to(data.roomId).emit('playing', {
+      playingFlag: data.playingFlag
+    });
   });
 
   socket.on("sendUser", (data) => {
     var flag = false;
-    index = data.i; //현재 index번호
-    var key = data.keyword[index].keyword.toString();//키워드 내용 오브젝트->스트링화
+    indexNum = data.i; //현재 index번호
+    var key = data.keyword[indexNum].keyword.toString();//키워드 내용 오브젝트->스트링화
     var keyArray = [];
     if(key.indexOf(' ') !== -1){
       keyArray = key.split(' ');
     } //중간에 공백이 있는 경우에 공백을 중심으로 문자열을 자르고 배열에 넣음
-    if(data.answer[index].answer === data.value){
+    if(data.answer[indexNum].answer === data.value){
+      //|| keyArray.indexOf(key.value) !== -1
       //정답이랑 같거나, 키워드랑 같거나, 키워드의 배열에 채팅 값이 있으면 실행
       flag = true; //클라이언트에 넘길 flag값
       score += 10; //스코어를 +10
@@ -113,6 +146,7 @@ io.sockets.on("connection", function(socket) {
     });//'userInfo'이벤트 호출 -> 각종 값 넘겨줌
   });
 });
+
 
 function shuffle(array) {
   for(var i = array.length - 1; i > 0; i--) {
