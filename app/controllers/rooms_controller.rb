@@ -1,5 +1,6 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!, except: :main
+  before_action :exit_chk, except: [:show, :edit, :main]
 
   def main
 
@@ -14,10 +15,10 @@ class RoomsController < ApplicationController
   end
 
   def create
-    if current_user.player
-      redirect_to rooms_path, flash: {alert: "이미 방이 있는 경우 생성할 수 없어요"}
-      return
-    end
+    # if current_user.player
+    #   redirect_to rooms_path, flash: {alert: "이미 방이 있는 경우 생성할 수 없어요"}
+    #   return
+    # end
     question_id =  params.require(:room).permit(:question)['question'].to_i
     question = Question.find(question_id)
 
@@ -60,7 +61,11 @@ class RoomsController < ApplicationController
   end
 
   def edit
-    @room = Room.find(params[:id])
+    if current_user.room == params[:id] and current_user.player.isMaster
+      @room = Room.find(params[:id])
+    else
+      redirect_to rooms_path, flash: {alert: "방장만 방 정보를 수정할 수 있어요"}
+    end
   end
 
   def update
@@ -107,7 +112,7 @@ class RoomsController < ApplicationController
   def roomquit
     player = current_user.player
     room = player.room
-    num_person = room.players.size
+    num_person = room.players.count
 
     if num_person == 1
       room.destroy
@@ -149,14 +154,27 @@ class RoomsController < ApplicationController
       return
     end
 
-    if (current_user.room.id != @room.id) & (current_user.player != nil)
-      redirect_to room_path(current_user.room.id), flash: {alert: "기존에 플레이하던 방으로 이동됩니다."}
-      return
-    end
-
-    # if (current_user.room.nowPlaying)
-    #   redirect_to rooms_path, flash: {alert: "게임 중인 방에는 들어갈 수 없어요.."}
+    # 현재 방에 들어가있지 않으면 방에서 나가게 설정되어 있으므로 삭제합니다.
+    # if (current_user.room.id != @room.id) & (current_user.player != nil)
+    #   redirect_to room_path(current_user.room.id), flash: {alert: "기존에 플레이하던 방으로 이동됩니다."}
     #   return
     # end
+
   end
+
+  def exit_chk
+    if current_user.room && current_user.player
+      if current_user.room.players.count <= 1
+        current_user.room.destroy
+      else
+        if current_user.player.isMaster == true
+          next_user = Room.find(room.id).players.second
+          next_user.update(isMaster: true)
+        end
+
+        current_user.player.destroy
+      end
+    end
+  end
+
 end
