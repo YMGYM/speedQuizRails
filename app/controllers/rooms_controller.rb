@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!, except: :main
-  before_action :exit_chk, except: [:show, :edit, :main]
+  before_action :exit_chk, except: [:show, :create, :edit, :update, :main, :startGame]
 
   def main
 
@@ -15,10 +15,6 @@ class RoomsController < ApplicationController
   end
 
   def create
-    # if current_user.player
-    #   redirect_to rooms_path, flash: {alert: "이미 방이 있는 경우 생성할 수 없어요"}
-    #   return
-    # end
     question_id =  params.require(:room).permit(:question)['question'].to_i
     question = Question.find(question_id)
 
@@ -154,17 +150,11 @@ class RoomsController < ApplicationController
       return
     end
 
-    # 현재 방에 들어가있지 않으면 방에서 나가게 설정되어 있으므로 삭제합니다.
-    # if (current_user.room.id != @room.id) & (current_user.player != nil)
-    #   redirect_to room_path(current_user.room.id), flash: {alert: "기존에 플레이하던 방으로 이동됩니다."}
-    #   return
-    # end
-
   end
 
   def exit_chk
     if current_user.room && current_user.player
-      if current_user.room.players.count <= 1
+      if current_user.room.players.count <= 1 # 혼자 있었으면
         current_user.room.destroy
       else
         if current_user.player.isMaster == true

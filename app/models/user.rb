@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one :player
+  has_one :player, :dependent => :destroy
   has_one :room, through: :player
 
   validates_uniqueness_of :nickName
