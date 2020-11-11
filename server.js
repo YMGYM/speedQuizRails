@@ -98,6 +98,10 @@ io.sockets.on("connection", function(socket) {
     });
   });
 
+  socket.on('grating', (data) => {
+    io.emit('grating', data);
+  });
+
   socket.on('joinRoom', (data) => {
     socket.join(data);
   });

@@ -49,7 +49,6 @@
 </div>
 
 <script>
-
     var player;
     var nowSong;
     var stArr;
@@ -139,15 +138,29 @@
       timeLimit -= 1;
     }, 1000);
 
+    window.addEventListener('beforeunload', (event) => {
+      event.preventDefault();
+      event.returnValue = '진짜 나감??';
+    });
+
 // Socket
     socket.on('question', () => {
       socket.emit('question',{
         questionInfo: questionInfo,
-        roomId: roomId
+        roomId: roomId,
       });
     });
 
-    setInterval(() => {
+    socket.emit('grating', nick);
+
+    socket.on('grating', (data) => {
+      var messages = document.getElementById('messages');
+      var text = document.createTextNode(`${data}님이 입장하셨습니다.`);
+      messages.appendChild(text);
+      messages.appendChild(document.createElement("br"));
+    });
+
+    const timer = setInterval(() => {
       index = url.findIndex(i => i == nowSong);
       if(timeLimit < 0) {
         nowSong = url[index+1];
@@ -187,6 +200,7 @@
       if(index === questionLimit || index === stArr.length){
         alert("문제가 모두 끝났습니다!");
         window.location.href = "http://localhost:3000";
+        clearInterval(timer);
       }//문제 다 풀면 리다이렉트
     }, 1000);
 
