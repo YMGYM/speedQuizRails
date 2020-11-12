@@ -107,9 +107,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('playing', (data) => {
-    io.to(data.roomId).emit('playing', {
-      playingFlag: data.playingFlag
-    });
+    io.to(data.roomId).emit('playing');
   });
 
   socket.on("sendUser", (data) => {

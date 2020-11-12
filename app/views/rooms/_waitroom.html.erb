@@ -9,7 +9,7 @@
 
 <% if @user.isMaster == true %>
   <div class="row">
-    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-secondary col-sm-4", method: :post, "data-turbolinks": false %>
+    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-secondary col-sm-4", method: :post, "data-turbolinks": false, "onClick": start() %>
     <div class="col-sm-1"></div>
     <%= link_to '방 정보 수정', edit_room_path, class: "btn btn-lg btn-outline-dark col-sm-3", method: :get %>
     <div class="col-sm-1"></div>
@@ -97,22 +97,26 @@
       messages.appendChild(document.createElement("br"));
     });
 
-    setInterval(() => {
+    // setInterval(() => {
+    //   socket.emit('playing', {
+    //     roomId: roomId,
+    //     playingFlag: playingFlag
+    //   });
+    // }, 1000);
+
+    function start(){
       socket.emit('playing', {
-        roomId: roomId,
-        playingFlag: playingFlag
+        roomId: roomId
       });
-    }, 1000);
+    }
 
     socket.on('playing', (data) => {
-      if(data.playingFlag === true){
-        if (self.name != 'reload') {
-         self.name = 'reload';
-         self.location.reload(true);
-        }
-        else{
-          self.name = '';
-        }
+      if (self.name != 'reload') {
+       self.name = 'reload';
+       self.location.reload(true);
+      }
+      else{
+        self.name = '';
       }
     });
 
