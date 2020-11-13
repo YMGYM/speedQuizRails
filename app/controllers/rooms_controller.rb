@@ -139,6 +139,11 @@ class RoomsController < ApplicationController
     redirect_to room
   end
 
+  def reloadGame
+    room = current_user.room
+    redirect_to room
+  end
+
   private
   def rooms_params
     params.require(:room).permit(:title, :questionNumber, :limitTime, :isSecret, :password)
