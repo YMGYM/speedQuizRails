@@ -107,6 +107,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('playing', (data) => {
+    console.log(data);
     io.to(data.roomId).emit('playing');
   });
 
