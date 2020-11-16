@@ -97,13 +97,6 @@
       messages.appendChild(document.createElement("br"));
     });
 
-    // setInterval(() => {
-    //   socket.emit('playing', {
-    //     roomId: roomId,
-    //     playingFlag: playingFlag
-    //   });
-    // }, 1000);
-
     function start(){
       socket.emit('playing', {
         roomId: roomId
@@ -112,13 +105,7 @@
 
     socket.on('playing', (data) => {
       console.log("Here!");
-      if (self.name != 'reload') {
-       self.name = 'reload';
-       self.location.reload(true);
-      }
-      else{
-        self.name = '';
-      }
+      setTimeout("history.go(0)", 1000);
     });
 
     function msg_time() {	// 1초씩 카운트
