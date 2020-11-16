@@ -103,11 +103,12 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('joinRoom', (data) => {
+    console.log(data, "조인룸");
     socket.join(data);
   });
 
   socket.on('playing', (data) => {
-    console.log(data);
+    console.log(data, "플ㄹㅔ잉");
     io.to(data.roomId).emit('playing');
   });
 
