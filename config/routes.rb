@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   get 'help' => 'rooms#help', as: :help
   post '/startGame' => 'rooms#startGame', as: :startGame
 
+  post '/result/:id' => 'rooms#result', as: :result
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
