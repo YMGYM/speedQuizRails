@@ -56,6 +56,16 @@ io.sockets.on("connection", function(socket) {
             question = './Questions/animesong.csv';
             break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
+
+        // fs.createReadStream('./Questions/AllQuestionList.csv')
+        //   .pipe(csv())
+        //   .on('data', (row) => {
+        //     console.log(row);
+        //   })
+        //   .on('end', () => {
+        //
+        //   });
+
         fs.createReadStream(question)
           .pipe(csv())
           .on('data', (row) => {
@@ -103,12 +113,12 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('joinRoom', (data) => {
-    console.log(data, "조인룸");
-    socket.join(data);
+    //console.log(data, "조인룸");
+    socket.join(data.roomId);
+    io.to(data.roomId).emit('joinRoom', `${data.nick}님이 입장하셨습니다.`);
   });
 
   socket.on('playing', (data) => {
-    console.log(data, "플ㄹㅔ잉");
     io.to(data.roomId).emit('playing');
   });
 

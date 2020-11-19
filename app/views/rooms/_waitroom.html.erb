@@ -88,7 +88,14 @@
       }//자동스크롤
     }
 
-    socket.emit('joinRoom', roomId);
+    socket.emit('joinRoom', {roomId: roomId, nick: nick});
+
+    socket.on('joinRoom', (data) => {
+      var messages = document.getElementById("messages");
+      var text = document.createTextNode(data);
+      messages.appendChild(text);
+      messages.appendChild(document.createElement("br"));
+    });
 
     socket.on('chat', (data) => {
       var messages = document.getElementById("messages");
