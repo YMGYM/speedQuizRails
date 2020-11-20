@@ -8,7 +8,7 @@ var socketRoom = [];
 //redis와 연결
 
 io.adapter(redis({
-  host: "localhost", //rails와 같게
+  host: "3.88.111.248", //rails와 같게
   port: "6379" //rails와 같게
 }));
 //var flag = false;
