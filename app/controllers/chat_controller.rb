@@ -5,7 +5,7 @@ class ChatController < ApplicationController
   def index
     @emitter = SocketIO::Emitter.new(
       redis: Redis.new(
-        :host => 'localhost', #보통은 localhost
+        :host => '3.88.111.248', #보통은 localhost
         :port => '6379' #redis 의 Port번호. redis-cli의 포트번호 적으면 됨.
       )
     )
