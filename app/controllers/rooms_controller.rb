@@ -46,12 +46,12 @@ class RoomsController < ApplicationController
     room_authenticate
     session[:lastroom] = @room.id
 
-    # @emitter = SocketIO::Emitter.new(
-    #   redis: Redis.new(
-    #     :host => '3.88.111.248',
-    #     :port => '6379'
-    #   )
-    # )
+    @emitter = SocketIO::Emitter.new(
+      redis: Redis.new(
+        :host => '3.88.111.248',
+        :port => '6379'
+      )
+    )
 
     @players = @room.players.map {|m| m.user.id}
   end
