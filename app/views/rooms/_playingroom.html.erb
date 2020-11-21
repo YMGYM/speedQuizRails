@@ -198,8 +198,8 @@
       }
       //시간초과되었을 때 다음으로 넘김
       if(index === questionLimit || index === stArr.length){
-        alert("문제가 모두 끝났습니다!");
-        window.location.href = "http://localhost:3000";
+        alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
+        window.location.href = "/result/" + <%= @room.id %> + '/' +  1; // 우승자 id값
         clearInterval(timer);
       }//문제 다 풀면 리다이렉트
     }, 1000);

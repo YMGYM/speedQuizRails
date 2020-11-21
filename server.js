@@ -86,7 +86,6 @@ io.sockets.on("connection", function(socket) {
             }
 
             socket.join(data.roomId);
-
             callback();
         });
       });

@@ -6,7 +6,7 @@
   <h3 class="center-align">요미귀요미!</h3>
 
   <div class="row" style="height: 50px"></div>
-  <div class="center-align">
+  <div class="center-align" hidden>
     <div id="player"></div>
   </div>
 
@@ -17,9 +17,6 @@
     <div class="col-1"></div>
 </div>
 
-<div class="center-align">
-  <div id="player"></div>
-</div>
 
 <script>
     // 2. This code loads the IFrame Player API code asynchronously.
@@ -36,11 +33,11 @@
         player = new YT.Player('player', {
             height: '360',
             width: '640',
-            videoId: `AWrXKyFzg0o`,
+            videoId: `MHLChAb0xfM`,
             playerVars: {
-                'start': 10,
+                'start': 3,
                 'loop' : 1,
-                'end': 100
+                'end': 60
             },
             events: {
                 'onReady': onPlayerReady,
