@@ -113,7 +113,7 @@
 
     socket.on('playing', (data) => {
       console.log("Here!");
-      setTimeout(Turbolinks.visit(window.location), 1000);
+      setTimeout(Turbolinks.visit(history("0")), 1000);
     });
 
     // function msg_time() {	// 1초씩 카운트

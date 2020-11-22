@@ -1,10 +1,10 @@
 var io = require("socket.io").listen(4000);
-var redis = require("socket.io-redis");
-var redisServer = require('redis');
+//var redis = require("socket.io-redis");
+//var redisServer = require('redis');
 var csv = require('csv-parser');
-var client = redisServer.createClient();
+//var client = redisServer.createClient();
 var fs = require('fs');
-var socketRoom = [];
+//var socketRoom = [];
 //redis와 연결
 
 // io.adapter(redis({
