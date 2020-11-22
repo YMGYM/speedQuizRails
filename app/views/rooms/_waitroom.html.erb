@@ -66,7 +66,8 @@
 <p id="ViewTimer"></p>
 
 <script>
-    var socket = io.connect("http://3.88.111.248:4000");
+    // var socket = io.connect("http://3.88.111.248:4000");
+    var socket = io.connect("http://localhost:4000");
     var SetTime = 60;		// 최초 설정 시간(기본 : 초)
     var roomId = `waiting${<%= @room.id %>}`;
     var nick = "<%=current_user.nickName%>";
