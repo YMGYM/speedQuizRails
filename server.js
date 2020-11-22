@@ -88,10 +88,13 @@ io.sockets.on("connection", function(socket) {
               keyword.length = 0;
               url.length = 0;
               startTime.length = 0;
-              answer.push({answer: rowArr[i].answer});
-              keyword.push({keyword: rowArr[i].answerKeyword});
-              url.push(rowArr[i].src);
-              startTime.push(rowArr[i].startTime);
+              roomIdArray.push({id: data.roomId});
+              for(var i in rowArr) {
+                answer.push({answer: rowArr[i].answer});
+                keyword.push({keyword: rowArr[i].answerKeyword});
+                url.push(rowArr[i].src);
+                startTime.push(rowArr[i].startTime);
+              }//각각의 key값을 배열로 만들어 넣음
             }
 
             socket.join(data.roomId);
