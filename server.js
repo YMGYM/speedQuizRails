@@ -75,6 +75,7 @@ io.sockets.on("connection", function(socket) {
           .on('end', () => {
             //console.log('CSV file successfully processed');
             shuffle(rowArr); //csv를 읽은 배열을 섞음
+            console.log(data);
             if(roomIdArray.length === 0){
               roomIdArray.push({id: data.roomId});
               for(var i in rowArr) {
@@ -83,21 +84,18 @@ io.sockets.on("connection", function(socket) {
                 url.push(rowArr[i].src);
                 startTime.push(rowArr[i].startTime);
               }//각각의 key값을 배열로 만들어 넣음
-              console.log("여기 두번 작동 안해요 하면 에바");
             }else if(roomIdArray.findIndex(i => i.id === data.roomId) === -1){
-              answer.length = 0;
-              keyword.length = 0;
-              url.length = 0;
-              startTime.length = 0;
+              answer = [];
+              keyword = [];
+              url = [];
+              startTime = [];
               roomIdArray.push({id: data.roomId});
-              console.log("두번째. 세번째보다 늦게 작동하면 안대요");
               for(var i in rowArr) {
                 answer.push({answer: rowArr[i].answer});
                 keyword.push({keyword: rowArr[i].answerKeyword});
                 url.push(rowArr[i].src);
                 startTime.push(rowArr[i].startTime);
               }//각각의 key값을 배열로 만들어 넣음
-              console.log('세번째. 두번째보다 빨리 작동하면 안대요');
             }
 
             socket.join(data.roomId);
