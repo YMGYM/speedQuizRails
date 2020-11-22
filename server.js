@@ -74,7 +74,7 @@ io.sockets.on("connection", function(socket) {
           .on('end', () => {
             //console.log('CSV file successfully processed');
             shuffle(rowArr); //csv를 읽은 배열을 섞음
-            if(roomIdArray.findIndex(i => i.id === data.roomId) === -1){
+            if(roomIdArray.length === 0){
               roomIdArray.push({id: data.roomId});
               for(var i in rowArr) {
                 answer.push({answer: rowArr[i].answer});
@@ -82,6 +82,15 @@ io.sockets.on("connection", function(socket) {
                 url.push(rowArr[i].src);
                 startTime.push(rowArr[i].startTime);
               }//각각의 key값을 배열로 만들어 넣음
+            }else if(roomIdArray.findIndex(i => i.id === data.roomId) === -1){
+              answer.length = 0;
+              keyword.length = 0;
+              url.length = 0;
+              startTime.length = 0;
+              answer.push({answer: rowArr[i].answer});
+              keyword.push({keyword: rowArr[i].answerKeyword});
+              url.push(rowArr[i].src);
+              startTime.push(rowArr[i].startTime);
             }
 
             socket.join(data.roomId);

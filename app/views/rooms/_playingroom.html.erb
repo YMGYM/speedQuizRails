@@ -199,8 +199,19 @@
       //시간초과되었을 때 다음으로 넘김
       if(index === questionLimit || index === stArr.length){
         alert("문제가 모두 끝났습니다!");
-        window.location.href = "http://localhost:3000";
+        //window.location.href = "http://localhost:3000";
         clearInterval(timer);
+        // for(var i in result){
+        //   //
+        // }
+        //var winner_id = result의 Score값에서 Score가 가장 큰 result값을 찾음
+        // jQuery.ajax({
+        //   type: "POST",
+        //   url: `http://localhost:3000/result/${roomId}`,
+        //   data: {
+        //     winner_id : , //request.body.res로 접근가능
+        //   }
+        // })
       }//문제 다 풀면 리다이렉트
     }, 1000);
 
