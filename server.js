@@ -152,7 +152,6 @@ io.sockets.on("connection", function(socket) {
         if(i === data.value){
           flag = true; //클라이언트에 넘길 flag값
           score += 10; //스코어를 +10
-          keyArray[index] = 'asraerjasrnasrn';
         }
       });
     }else if(key !== '' && data.value !== '' && key.indexOf(' ') === -1){
