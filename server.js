@@ -37,7 +37,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   async function socketFunction(callback){
-    io.emit('question');
+    //io.emit('question');
     await new Promise(resolve => {
       socket.on('question', data => {
         resolve(data);
