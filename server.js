@@ -36,11 +36,12 @@ io.sockets.on("connection", function(socket) {
     socket.join(data);
   });
 
-  async function socketFunction(callback){
+  //async function socketFunction(callback){
     //io.emit('question');
-    await new Promise(resolve => {
+  function socketFunction(callback){
+    //await new Promise(resolve => {
       socket.on('question', data => {
-        resolve(data);
+        //resolve(data);
 
         roomId = data.roomId;
         switch(data.questionInfo){
@@ -101,7 +102,7 @@ io.sockets.on("connection", function(socket) {
             callback();
         });
       });
-    });
+//    });
   }
 
   socketFunction(async() => {
