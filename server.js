@@ -7,11 +7,12 @@ var fs = require('fs');
 var socketRoom = [];
 //redis와 연결
 
-io.adapter(redis({
-  host: "localhost", //rails와 같게
-  port: "6379" //rails와 같게
-}));
+// io.adapter(redis({
+// //   host: "3.88.111.248", //rails와 같게
+// //   port: "6379" //rails와 같게
+// // }));
 //var flag = false;
+
 var user = [];
 var indexNum = 0;
 var question;
@@ -94,7 +95,6 @@ io.sockets.on("connection", function(socket) {
             }
 
             socket.join(data.roomId);
-
             callback();
         });
       });

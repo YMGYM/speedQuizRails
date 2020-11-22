@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!, except: :main
-  before_action :exit_chk, except: [:show, :create, :edit, :update, :main, :startGame]
+  before_action :exit_chk, except: [:show, :create, :edit, :update, :main, :startGame, :result]
 
   def main
 
@@ -48,7 +48,7 @@ class RoomsController < ApplicationController
 
     @emitter = SocketIO::Emitter.new(
       redis: Redis.new(
-        :host => 'localohst',
+        :host => '3.88.111.248',
         :port => '6379'
       )
     )
@@ -57,10 +57,10 @@ class RoomsController < ApplicationController
   end
 
   def edit
-    if current_user.room == params[:id] and current_user.player.isMaster
+    if (current_user.room.id.to_s == params[:id] ) && (current_user.player.isMaster)
       @room = Room.find(params[:id])
     else
-      redirect_to rooms_path, flash: {alert: "방장만 방 정보를 수정할 수 있어요"}
+      redirect_to current_user.room, flash: {alert: "방장만 방 정보를 수정할 수 있어요"}
     end
   end
 
@@ -144,6 +144,14 @@ class RoomsController < ApplicationController
     redirect_to room
   end
 
+  def result
+    if current_user.player.isMaster == true
+      current_user.room.update(nowPlaying: false)
+    end
+    @room = params[:id]
+    @winner = User.find(params[:winner_id])
+  end
+
   private
   def rooms_params
     params.require(:room).permit(:title, :questionNumber, :limitTime, :isSecret, :password)
@@ -163,10 +171,9 @@ class RoomsController < ApplicationController
         current_user.room.destroy
       else
         if current_user.player.isMaster == true
-          next_user = Room.find(room.id).players.second
+          next_user = Room.find(current_user.room.id).players.second
           next_user.update(isMaster: true)
         end
-
         current_user.player.destroy
       end
     end

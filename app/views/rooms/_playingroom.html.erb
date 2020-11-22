@@ -54,7 +54,7 @@
     var stArr;
     var url;
     var timeLimit = "<%= @room.limitTime %>";
-    var socket = io.connect("http://localhost:4000");
+    var socket = io.connect("http://3.88.111.248:4000");
     var nick = "<%=current_user.nickName%>";
     var score = 0;
     var currentId = "<%=current_user.id%>";
@@ -198,8 +198,8 @@
       }
       //시간초과되었을 때 다음으로 넘김
       if(index === questionLimit || index === stArr.length){
-        alert("문제가 모두 끝났습니다!");
-        //window.location.href = "http://localhost:3000";
+        alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
+        window.location.href = "/result/" + <%= @room.id %> + '/' +  1; // 우승자 id값
         clearInterval(timer);
         // for(var i in result){
         //   //
