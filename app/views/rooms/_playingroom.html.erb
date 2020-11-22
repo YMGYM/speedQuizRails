@@ -1,3 +1,4 @@
+
 <!--<p hidden id="ViewTimer"></p>-->
 
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>-->
@@ -301,13 +302,17 @@
       //시스템메시지
     });
     //채팅 오갈때마다 검사
+
     socket.on('answer', (data) => {
       url = data.url;
       nowSong = data.url[0];
       stArr = data.startTime;
       keyword = data.keyword;
       answer = data.answer;
-      console.log(answer)
+      console.log("이게 먼저 되야됨");
     });
+
+    console.log(url);
+
     //시작할 시 문제정보 받음
 </script>

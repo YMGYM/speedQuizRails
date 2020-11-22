@@ -1,4 +1,11 @@
-var io = require("socket.io").listen(4000);
+var server = require('http').createServer();
+
+var io = require("socket.io").(server, {
+  perMessageDefalte: true,
+  transports: ['polling'],
+  httpCompression: false
+});
+server.listen(4000);
 //var redis = require("socket.io-redis");
 //var redisServer = require('redis');
 var csv = require('csv-parser');
