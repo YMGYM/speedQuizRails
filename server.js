@@ -1,8 +1,9 @@
-var server = require('http').createServer();
+const server = require('http').createServer();
 
-var io = require("socket.io").(server, {
-  transports: ['polling'],
+const io = require('socket.io')(server, {
+  transports: ['polling']
 });
+
 server.listen(4000);
 //var redis = require("socket.io-redis");
 //var redisServer = require('redis');
