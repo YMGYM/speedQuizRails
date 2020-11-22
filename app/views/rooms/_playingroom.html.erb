@@ -171,9 +171,9 @@
         nowSong = url[index+1];
         setTimeout(() => {
           player.loadVideoById({
-            'videoId': url[index+1],
-            'startSeconds': stArr[index+1],
-            'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
+            'videoId': url[index],
+            'startSeconds': stArr[index],
+            'endSeconds': parseInt(stArr[index]) + parseInt(timeLimit)
           });
         }, 4000);
         timeLimit = "<%= @room.limitTime %>";

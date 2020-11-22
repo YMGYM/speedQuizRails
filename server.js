@@ -75,7 +75,6 @@ io.sockets.on("connection", function(socket) {
           .on('end', () => {
             //console.log('CSV file successfully processed');
             shuffle(rowArr); //csv를 읽은 배열을 섞음
-            console.log(data);
             if(roomIdArray.length === 0){
               roomIdArray.push({id: data.roomId});
               for(var i in rowArr) {
@@ -85,9 +84,7 @@ io.sockets.on("connection", function(socket) {
                 startTime.push(rowArr[i].startTime);
               }//각각의 key값을 배열로 만들어 넣음
             }else if(roomIdArray.findIndex(i => i.id === data.roomId) === -1){
-              console.log(answer);
               answer = [];
-              console.log(answer);
               keyword = [];
               url = [];
               startTime = [];
