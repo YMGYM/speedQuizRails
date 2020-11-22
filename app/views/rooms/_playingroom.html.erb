@@ -54,8 +54,8 @@
     var stArr;
     var url;
     var timeLimit = "<%= @room.limitTime %>";
-    // var socket = io.connect("http://3.88.111.248:4000");
-    var socket = io.connect("http://localhost:4000");
+    var socket = io.connect("http://3.88.111.248:4000");
+    // var socket = io.connect("http://localhost:4000");
     var nick = "<%=current_user.nickName%>";
     var score = 0;
     var currentId = "<%=current_user.id%>";
@@ -254,6 +254,10 @@
           var search = result.indexOf(data.id);
           document.getElementById(result[search]).innerHTML = `${data.nick} - ${data.score}`;
         }
+        var pi = url.findIndex(i => i == nowSong);
+        answer[pi] = 'asdlkfasldkgjladskjglasfasdfas';
+        keyword[pi] = {keyword:''};
+        // console.log(keyword);
         //스코어 변경
         // var index = url.findIndex(i => i == nowSong);
         // nowSong = url[index+1];
