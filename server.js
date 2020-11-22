@@ -114,7 +114,6 @@ io.sockets.on("connection", function(socket) {
       keyword: keyword,
       answer: answer
     });//'answer'이벤트 호출
-    console.log(answer);
   });
 
   socket.on('sendUserWaiting', (data) => {
