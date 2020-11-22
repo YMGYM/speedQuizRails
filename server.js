@@ -75,7 +75,6 @@ io.sockets.on("connection", function(socket) {
           .on('end', () => {
             //console.log('CSV file successfully processed');
             shuffle(rowArr); //csv를 읽은 배열을 섞음
-            console.log(data);
             if(roomIdArray.length === 0){
               roomIdArray.push({id: data.roomId});
               for(var i in rowArr) {
