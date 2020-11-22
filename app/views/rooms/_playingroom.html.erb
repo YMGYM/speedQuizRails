@@ -250,44 +250,44 @@
           document.getElementById(result[search]).innerHTML = `${data.nick} - ${data.score}`;
         }
         //스코어 변경
-        var index = url.findIndex(i => i == nowSong);
-        nowSong = url[index+1];
-
-        setTimeout(() => {
-          player.loadVideoById({
-            'videoId': url[index+1],
-            'startSeconds': stArr[index+1],
-            'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
-          });
-        }, 4000); //남은 엔드타임 전부
-        timeLimit = "<%= @room.limitTime %>";
-        //다음곡 넘기기
-        messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
-        messages.appendChild(document.createElement("br"));
-        setTimeout(() => {
-          messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
-          messages.appendChild(document.createElement("br"));
-          if(move.scrollHeight > 0) {
-            move.scrollTop = move.scrollHeight;
-          }//자동스크롤
-        }, 1000);
-        setTimeout(() => {
-          messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
-          messages.appendChild(document.createElement("br"));
-          if(move.scrollHeight > 0) {
-            move.scrollTop = move.scrollHeight;
-          }//자동스크롤
-        }, 2000);
-        setTimeout(() => {
-          messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
-          messages.appendChild(document.createElement("br"));
-          if(move.scrollHeight > 0) {
-            move.scrollTop = move.scrollHeight;
-          }//자동스크롤
-        }, 3000);
-        if(move.scrollHeight > 0) {
-          move.scrollTop = move.scrollHeight;
-        }//자동스크롤
+        // var index = url.findIndex(i => i == nowSong);
+        // nowSong = url[index+1];
+        //
+        // setTimeout(() => {
+        //   player.loadVideoById({
+        //     'videoId': url[index+1],
+        //     'startSeconds': stArr[index+1],
+        //     'endSeconds': parseInt(stArr[index+1]) + parseInt(timeLimit)
+        //   });
+        // }, 4000); //남은 엔드타임 전부
+        // timeLimit = "<%= @room.limitTime %>";
+        // //다음곡 넘기기
+        // messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
+        // messages.appendChild(document.createElement("br"));
+        // setTimeout(() => {
+        //   messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
+        //   messages.appendChild(document.createElement("br"));
+        //   if(move.scrollHeight > 0) {
+        //     move.scrollTop = move.scrollHeight;
+        //   }//자동스크롤
+        // }, 1000);
+        // setTimeout(() => {
+        //   messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
+        //   messages.appendChild(document.createElement("br"));
+        //   if(move.scrollHeight > 0) {
+        //     move.scrollTop = move.scrollHeight;
+        //   }//자동스크롤
+        // }, 2000);
+        // setTimeout(() => {
+        //   messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
+        //   messages.appendChild(document.createElement("br"));
+        //   if(move.scrollHeight > 0) {
+        //     move.scrollTop = move.scrollHeight;
+        //   }//자동스크롤
+        // }, 3000);
+        // if(move.scrollHeight > 0) {
+        //   move.scrollTop = move.scrollHeight;
+        // }//자동스크롤
       }
       //시스템메시지
     });
