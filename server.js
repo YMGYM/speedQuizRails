@@ -66,7 +66,7 @@ io.sockets.on("connection", function(socket) {
         //   .on('end', () => {
         //
         //   });
-
+        rowArr = [];
         fs.createReadStream(question)
           .pipe(csv())
           .on('data', (row) => {
@@ -85,7 +85,9 @@ io.sockets.on("connection", function(socket) {
                 startTime.push(rowArr[i].startTime);
               }//각각의 key값을 배열로 만들어 넣음
             }else if(roomIdArray.findIndex(i => i.id === data.roomId) === -1){
+              console.log(answer);
               answer = [];
+              console.log(answer);
               keyword = [];
               url = [];
               startTime = [];
