@@ -148,10 +148,11 @@ io.sockets.on("connection", function(socket) {
       flag = true; //클라이언트에 넘길 flag값
       score += 10; //스코어를 +10
     }else if(keyArray.length !== 0 && data.value !== ''){
-      keyArray.forEach((i) => {
+      keyArray.forEach((i, index) => {
         if(i === data.value){
           flag = true; //클라이언트에 넘길 flag값
           score += 10; //스코어를 +10
+          keyArray[index] = 'asraerjasrnasrn';
         }
       });
     }else if(key !== '' && data.value !== '' && key.indexOf(' ') === -1){
