@@ -212,6 +212,8 @@
           window.location.href = `/result/<%= @room.id %>/${max.id}`; // 우승자 id값
         }
 
+        finish();
+
         clearInterval(timer);
       }//문제 다 풀면 리다이렉트
     }, 1000);
