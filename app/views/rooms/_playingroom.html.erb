@@ -192,11 +192,13 @@
         setTimeout(() => {
           messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
           messages.appendChild(document.createElement("br"));
+            console.log(index);
           if(move.scrollHeight > 0) {
             move.scrollTop = move.scrollHeight;
           }//자동스크롤
         }, 3000);
       }
+
       //시간초과되었을 때 다음으로 넘김
       if(index === questionLimit || index === stArr.length){
         function finish(){
@@ -208,10 +210,10 @@
           var max = finishArray.reduce(function(prev, current) {
             return (prev.point > current.point) ? prev : current
           });
+
           alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
           window.location.href = `/result/<%= @room.id %>/${max.id}`; // 우승자 id값
         }
-
         finish();
 
         clearInterval(timer);
