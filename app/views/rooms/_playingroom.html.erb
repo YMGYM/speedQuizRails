@@ -301,6 +301,10 @@
       }
       //시스템메시지
     });
+
+    ///초기 재생오류 해결
+
+
     //채팅 오갈때마다 검사
     async function socketFunction() {
       await new Promise(resolve => {
@@ -313,6 +317,13 @@
           answer = data.answer;
         });
       });
+      setTimeout(() => {
+        player.loadVideoById({
+          'videoId': url[0],
+          'startSeconds': stArr[0],
+          'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
+        });
+      }, 300);
     }
 
     document.addEventListener("DOMContentLoaded", socketFunction);

@@ -140,7 +140,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on("sendUser", (data) => {
-    var flag = false;
+    var flag = 0;
     indexNum = data.i; //현재 index번호
     var key = data.keyword[indexNum].keyword.toString();//키워드 내용 오브젝트->스트링화
     var keyArray = [];
