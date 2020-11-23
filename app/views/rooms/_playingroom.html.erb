@@ -246,6 +246,10 @@
       var text = document.createTextNode(`${data.nick} : ${data.value}`);
       messages.appendChild(text);
       messages.appendChild(document.createElement("br"));
+      var move = document.getElementById('box');
+      if(move.scrollHeight > 0) {
+        move.scrollTop = move.scrollHeight;
+      }//자동스크롤
       //채팅
       if(data.flag === true){
         if(data.nick === nick) {
