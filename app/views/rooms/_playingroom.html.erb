@@ -167,6 +167,7 @@
       if(timeLimit < 0) {
         nowSong = url[index+1];
         setTimeout(() => {
+            console.log(url[index]);
           player.loadVideoById({
             'videoId': url[index],
             'startSeconds': stArr[index],
