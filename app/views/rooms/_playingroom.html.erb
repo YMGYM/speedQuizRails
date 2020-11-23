@@ -203,10 +203,10 @@
           for(var i in result){
             var finishUser = document.getElementById(result[i]).innerHTML;
             var point = finishUser.split(" ")[0];
-            finishArray.push({id: result[i], point: point})
+            finishArray.push({id: result[i], point: point});
           }
           var max = finishArray.reduce(function(prev, current) {
-            return (prev.y > current.y) ? prev : current
+            return (prev.point > current.point) ? prev : current
           });
           alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
           window.location.href = `/result/<%= @room.id %>/${max.id}`; // 우승자 id값
