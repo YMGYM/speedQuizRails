@@ -13,11 +13,11 @@
   <div class="form-group row">
     <div class="col-sm-6">
       <%= form.label :count, '문제 수' %>
-      <%= form.number_field :questionNumber, value: 30, class:"form-control"%>
+      <%= form.number_field :questionNumber, value: 30, max:30, min:5, class:"form-control"%>
     </div>
     <div class="col-sm-6">
       <%= label_tag :limitTime, '제한 시간(초)' %>
-      <%= form.number_field :limitTime, value: 60, class:"form-control"%>
+      <%= form.number_field :limitTime, value: 60, max:300, min:20, class:"form-control"%>
     </div>
   </div>
 
