@@ -302,17 +302,21 @@
       //시스템메시지
     });
     //채팅 오갈때마다 검사
-    socket.on('answer', (data) => {
-      $(document).ready(function() {
-        url = data.url;
-        nowSong = data.url[0];
-        stArr = data.startTime;
-        keyword = data.keyword;
-        answer = data.answer;
+    async function socketFunction() {
+      await new Promise(resolve => {
+        socket.on('answer', (data) => {
+          resolve(data);
+          url = data.url;
+          nowSong = data.url[0];
+          stArr = data.startTime;
+          keyword = data.keyword;
+          answer = data.answer;
+        });
       });
-    });
+    }
 
-    console.log(url);
+    document.addEventListener("DOMContentLoaded", socketFunction);
+
 
     //시작할 시 문제정보 받음
 </script>
