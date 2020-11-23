@@ -11,6 +11,7 @@
 <p>문제 수 : <%= @room.questionNumber %></p>
 <p>제한시간 : <%= @room.limitTime %></p>
 <hr>
+<button id="startButton" class="form-control btn btn-danger" onClick="startButtonClick()">게임을 시작하기 전에 한 번 눌러주세요</button><br />
 <button id="unmuteButton" class="form-control btn btn" >소리가 나오지 않는다면 이곳을 눌러주세요(다시재생 포함)</button>
 <br />
 <hr>
@@ -328,4 +329,10 @@
     document.addEventListener("DOMContentLoaded", socketFunction);
 
     //시작할 시 문제정보 받음
+
+    //더미버튼
+    function startButtonClick() {
+        var btn = document.getElementById("startButton");
+        btn.style.display = "none";
+    }
 </script>
