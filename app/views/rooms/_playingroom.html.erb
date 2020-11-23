@@ -1,6 +1,6 @@
 
 <!--<p hidden id="ViewTimer"></p>-->
-
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" ></script>-->
 <div class="row" style="height: 50px"></div>
 <h1>#<%= @room.id %> / <%= @room.title %></h1>
@@ -70,6 +70,7 @@
     var keyword;
     var answer;
     var index;
+    var finishArray = [];
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -146,12 +147,6 @@
     });
 
 // Socket
-    // socket.on('question', () => {
-    //   socket.emit('question',{
-    //     questionInfo: questionInfo,
-    //     roomId: roomId,
-    //   });
-    // });
     socket.emit('question',{
       questionInfo: questionInfo,
       roomId: roomId,
@@ -204,20 +199,20 @@
       }
       //시간초과되었을 때 다음으로 넘김
       if(index === questionLimit || index === stArr.length){
-        alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
-        window.location.href = "/result/" + <%= @room.id %> + '/' +  1; // 우승자 id값
+        function finish(){
+          for(var i in result){
+            var finishUser = document.getElementById(result[i]).innerHTML;
+            var point = finishUser.split(" ")[0];
+            finishArray.push({id: result[i], point: point})
+          }
+          var max = finishArray.reduce(function(prev, current) {
+            return (prev.y > current.y) ? prev : current
+          });
+          alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
+          window.location.href = `/result/<%= @room.id %>/${max.id}`; // 우승자 id값
+        }
+
         clearInterval(timer);
-        // for(var i in result){
-        //   //
-        // }
-        //var winner_id = result의 Score값에서 Score가 가장 큰 result값을 찾음
-        // jQuery.ajax({
-        //   type: "POST",
-        //   url: `http://localhost:3000/result/${roomId}`,
-        //   data: {
-        //     winner_id : , //request.body.res로 접근가능
-        //   }
-        // })
       }//문제 다 풀면 리다이렉트
     }, 1000);
 
@@ -250,10 +245,10 @@
       //채팅
       if(data.flag === true){
         if(data.nick === nick) {
-          document.getElementById(currentId).innerHTML = `${data.nick} - ${data.score}`;
+          document.getElementById(currentId).innerHTML = `${data.score}`;
         }else{
           var search = result.indexOf(data.id);
-          document.getElementById(result[search]).innerHTML = `${data.nick} - ${data.score}`;
+          document.getElementById(result[search]).innerHTML = `${data.score}`;
         }
         var pi = url.findIndex(i => i == nowSong);
         answer[pi] = 'asdlkfasldkgjladskjglasfasdfas';
