@@ -306,29 +306,27 @@
 
 
     //채팅 오갈때마다 검사
-    socket.on('answer', (data) => {
-      $(document).ready(function() {
-        if(data.flag == 0){
-            var pi = url.findIndex(i => i == nowSong);
-            answer[pi] = 'asdlkfasldkgjladskjglasfasdfas';
-            keyword[pi] = {keyword:''};
-            setTimeout(() => {
-                player.loadVideoById({
-                    'videoId': url[0],
-                    'startSeconds': stArr[0],
-                    'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
-                });
-            }, 1000); //남은 엔드타임 전부
-            timeLimit = "<%= @room.limitTime %>";
-            // //다음곡 넘기기
-        }
-        url = data.url;
-        nowSong = data.url[0];
-        stArr = data.startTime;
-        keyword = data.keyword;
-        answer = data.answer;
+    async function socketFunction() {
+      await new Promise(resolve => {
+        socket.on('answer', (data) => {
+          resolve(data);
+          url = data.url;
+          nowSong = data.url[0];
+          stArr = data.startTime;
+          keyword = data.keyword;
+          answer = data.answer;
+        });
       });
-    });
+      setTimeout(() => {
+        player.loadVideoById({
+          'videoId': url[0],
+          'startSeconds': stArr[0],
+          'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
+        });
+      }, 300);
+    }
+
+    document.addEventListener("DOMContentLoaded", socketFunction);
 
     //시작할 시 문제정보 받음
 </script>
