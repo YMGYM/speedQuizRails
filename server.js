@@ -126,7 +126,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('grating', (data) => {
-    io.emit('grating', data);
+    io.to(data.roomId).emit('grating', data.nick);
   });
 
   socket.on('joinRoom', (data) => {

@@ -157,7 +157,7 @@
       roomId: roomId,
     });
 
-    socket.emit('grating', nick);
+    socket.emit('grating', {nick: nick, roomId: roomId});
 
     socket.on('grating', (data) => {
       var messages = document.getElementById('messages');
