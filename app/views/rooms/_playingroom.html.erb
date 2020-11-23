@@ -302,14 +302,14 @@
       //시스템메시지
     });
     //채팅 오갈때마다 검사
-
     socket.on('answer', (data) => {
-      url = data.url;
-      nowSong = data.url[0];
-      stArr = data.startTime;
-      keyword = data.keyword;
-      answer = data.answer;
-      console.log("이게 먼저 되야됨");
+      $(document).ready(function() {
+        url = data.url;
+        nowSong = data.url[0];
+        stArr = data.startTime;
+        keyword = data.keyword;
+        answer = data.answer;
+      });
     });
 
     console.log(url);

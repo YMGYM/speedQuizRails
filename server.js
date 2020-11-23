@@ -1,8 +1,6 @@
 const server = require('http').createServer();
 
-const io = require('socket.io')(server, {
-  transports: ['polling']
-});
+const io = require('socket.io')(server);
 
 server.listen(4000);
 //var redis = require("socket.io-redis");
