@@ -257,8 +257,14 @@
       if(data.flag === true){
         if(data.nick === nick) {
           document.getElementById(currentId).innerHTML = `${data.score} Points`;
+            console.log(search);
+            console.log(data);
+            console.log(result);
         }else{
           var search = result.indexOf(data.id);
+          console.log(search);
+            console.log(data);
+            console.log(result);
           document.getElementById(result[search]).innerHTML = `${data.score} Points`;
         }
         var pi = url.findIndex(i => i == nowSong);
