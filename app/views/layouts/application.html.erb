@@ -16,12 +16,12 @@
     <% end %>
   </head>
 
-  <body data-turbolinks="false">
+  <body>
   <% content_for(:body_attributes) do %>
     data-turbolinks="false"
   <% end %>
     <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="<%= rooms_path %>">요미퀴즈</a>
+      <a class="navbar-brand" href="<%= rooms_path %>" data-turbolinks="false">요미퀴즈</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -34,7 +34,7 @@
           <% else %>
               <%= link_to '로그인', new_user_session_path,class: "nav-link" %>
           <% end %>
-          <a class="nav-link" href="<%= help_path %>">도움말</a>
+          <a class="nav-link" href="<%= help_path %>" data-turbolinks="false">도움말</a>
         </div>
       </div>
     </nav>
