@@ -252,6 +252,7 @@
         move.scrollTop = move.scrollHeight;
       }//자동스크롤
       //채팅
+      console.log(data.flag);
       if(data.flag === true){
         if(data.nick === nick) {
           document.getElementById(currentId).innerHTML = `${data.score}`;
@@ -333,7 +334,6 @@
     document.addEventListener("DOMContentLoaded", socketFunction);
 
     //시작할 시 문제정보 받음
-
     //더미버튼
     function startButtonClick() {
         var btn = document.getElementById("startButton");

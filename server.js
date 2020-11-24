@@ -140,7 +140,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on("sendUser", (data) => {
-    var flag = 0;
+    var flag = false;
     indexNum = data.i; //현재 index번호
     var key = data.keyword[indexNum].keyword.toString();//키워드 내용 오브젝트->스트링화
     var keyArray = [];
@@ -175,6 +175,10 @@ io.sockets.on("connection", function(socket) {
       nick: data.nick,
       id: data.id
     });//'userInfo'이벤트 호출 -> 각종 값 넘겨줌
+  });
+
+  socket.on('disconnect', () => {
+    
   });
 });
 
