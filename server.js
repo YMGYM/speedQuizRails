@@ -178,7 +178,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('disconnect', () => {
-    
+    //디스커넥트
   });
 });
 
