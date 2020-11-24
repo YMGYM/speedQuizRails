@@ -62,8 +62,8 @@
     var score = 0;
     var currentId = "<%=current_user.id%>";
     var players = "<%=@players%>";
-    var res = players.replace(/[^0-9]/g, "");
-    var result = res.split("");
+    var res = players.replace(/[\[\] ]/g, "").replace(/[^0-9]/g, ",");
+    var result = res.split(",");
     var move = document.getElementById("box");
     var questionInfo = "<%= @room.question.title %>";
     var questionLimit = parseInt("<%= @room.questionNumber %>");
