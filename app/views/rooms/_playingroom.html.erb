@@ -256,10 +256,10 @@
       console.log(data.flag);
       if(data.flag === true){
         if(data.nick === nick) {
-          document.getElementById(currentId).innerHTML = `${data.score}`;
+          document.getElementById(currentId).innerHTML = `${data.score} Points`;
         }else{
           var search = result.indexOf(data.id);
-          document.getElementById(result[search]).innerHTML = `${data.score}`;
+          document.getElementById(result[search]).innerHTML = `${data.score} Points`;
         }
         var pi = url.findIndex(i => i == nowSong);
         answer[pi] = 'asdlkfasldkgjladskjglasfasdfas';
