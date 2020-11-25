@@ -38,7 +38,6 @@
       <div class="card border-info overflow-auto">
         <div id="card" class="card-body">
           <h5 class="card-title"><%= player.user.nickName %></h5>
-    <!--      <h5 id="nick" class="card-title"></h5> -->
           <p id="<%= player.user.id %>" class="card-text float-right">0 Points</p>
         </div>
       </div>
@@ -57,7 +56,6 @@
     var url;
     var timeLimit = "<%= @room.limitTime %>";
     var socket = io.connect("http://3.88.111.248:4000");
-    // var socket = io.connect("http://localhost:4000");
     var nick = "<%=current_user.nickName%>";
     var score = 0;
     var currentId = "<%=current_user.id%>";
@@ -125,6 +123,7 @@
     });
 
     setTimeout(() => {
+      messages.style.color = 'red';
       messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
       messages.appendChild(document.createElement("br"));
     }, 1000);
@@ -157,6 +156,7 @@
 
     socket.on('grating', (data) => {
       var messages = document.getElementById('messages');
+      messages.style.color = 'red';
       var text = document.createTextNode(`${data}님이 입장하셨습니다.`);
       messages.appendChild(text);
       messages.appendChild(document.createElement("br"));
@@ -268,7 +268,7 @@
           document.getElementById(result[search]).innerHTML = `${data.score} Points`;
         }
         var pi = url.findIndex(i => i == nowSong);
-        answer[pi] = 'asdlkfasldkgjladskjglasfasdfas';
+        answer[pi] = 'YomiQuiZMaDeBYYOMIAndideA';
         keyword[pi] = {keyword:''};
         // console.log(keyword);
         //스코어 변경
