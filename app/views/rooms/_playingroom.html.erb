@@ -318,7 +318,7 @@
 
 
     //채팅 오갈때마다 검사
-    async function socketFunction() {
+    async function socketFunction(callback) {
       await new Promise(resolve => {
         socket.on('answer', (data) => {
           resolve(data);
@@ -329,15 +329,25 @@
           keyword = data.keyword;
           answer = data.answer;
         });
+
+        callback();
       });
-      setTimeout(() => {
+      <%# setTimeout(() => {
         player.loadVideoById({
           'videoId': url[0],
           'startSeconds': stArr[0],
           'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
         });
-      }, 300);
+      }, 300); %>
     }
+
+    socketFunction(() => {
+      player.loadVideoById({
+        'videoId': url[0],
+        'startSeconds': stArr[0],
+        'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
+      });
+    });
 
     document.addEventListener("DOMContentLoaded", socketFunction);
 
