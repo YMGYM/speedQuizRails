@@ -61,6 +61,9 @@ io.sockets.on("connection", function(socket) {
           case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
             question = './Questions/animesong.csv';
             break;
+          case "도전! 한국 가요 마스터! (난이도 중)":
+            question = './Questions/Kpop.csv';
+            break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         // fs.createReadStream('./Questions/AllQuestionList.csv')

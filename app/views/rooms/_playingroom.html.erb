@@ -16,8 +16,7 @@
 <br />
 <hr>
 <div id="box" class="container overflow-auto" style="height: 300px">
-  <div id="messages" class="alert alert-secondary" role="alert" style="text-decoration: underline; overflow: auto;">
-
+  <div id="messages" class="alert alert-secondary" style="text-decoration: underline; overflow: auto;">
   </div>
 </div>
 <div class="margin-s10"></div>
@@ -38,7 +37,6 @@
       <div class="card border-info overflow-auto">
         <div id="card" class="card-body">
           <h5 class="card-title"><%= player.user.nickName %></h5>
-    <!--      <h5 id="nick" class="card-title"></h5> -->
           <p id="<%= player.user.id %>" class="card-text float-right">0 Points</p>
         </div>
       </div>
@@ -57,13 +55,12 @@
     var url;
     var timeLimit = "<%= @room.limitTime %>";
     var socket = io.connect("http://3.88.111.248:4000");
-    // var socket = io.connect("http://localhost:4000");
     var nick = "<%=current_user.nickName%>";
     var score = 0;
     var currentId = "<%=current_user.id%>";
     var players = "<%=@players%>";
-    var res = players.replace(/[^0-9]/g, "");
-    var result = res.split("");
+    var res = players.replace(/[\[\] ]/g, "").replace(/[^0-9]/g, ",");
+    var result = res.split(",");
     var move = document.getElementById("box");
     var questionInfo = "<%= @room.question.title %>";
     var questionLimit = parseInt("<%= @room.questionNumber %>");
@@ -124,18 +121,25 @@
         player.playVideo();
     });
 
+    function sysMsg(text) {
+        let sysInfo = document.createElement('div');
+        sysInfo.classList.add('text-info');
+        sysInfo.appendChild(document.createTextNode(text));
+        messages.appendChild(sysInfo);
+    }
+
     setTimeout(() => {
-      messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
-      messages.appendChild(document.createElement("br"));
+      sysMsg('[시스템메시지] : 3초 뒤에 시작됩니다.');
+      // messages.appendChild(document.createElement("br"));
     }, 1000);
 
     setTimeout(() => {
-      messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
-      messages.appendChild(document.createElement("br"));
+      sysMsg('[시스템메시지] : 2초 뒤에 시작됩니다.');
+      // messages.appendChild(document.createElement("br"));
     }, 2000);
     setTimeout(() => {
-      messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
-      messages.appendChild(document.createElement("br"));
+      sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
+      // messages.appendChild(document.createElement("br"));
     }, 3000);
 
     setInterval(() => {
@@ -158,8 +162,7 @@
     socket.on('grating', (data) => {
       var messages = document.getElementById('messages');
       var text = document.createTextNode(`${data}님이 입장하셨습니다.`);
-      messages.appendChild(text);
-      messages.appendChild(document.createElement("br"));
+      sysMsg(`${data}님이 입장하셨습니다!`);
     });
 
     const timer = setInterval(() => {
@@ -175,26 +178,22 @@
           });
         }, 4000);
         timeLimit = "<%= @room.limitTime %>";
-        messages.appendChild(document.createTextNode(`제한시간이 초과되었습니다!`));
-        messages.appendChild(document.createElement("br"));
+        sysMsg(`제한시간이 초과되었습니다.`);
         setTimeout(() => {
-          messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
-          messages.appendChild(document.createElement("br"));
+          sysMsg('[시스템메시지] : 3초 뒤에 시작됩니다.');
           if(move.scrollHeight > 0) {
             move.scrollTop = move.scrollHeight;
           }//자동스크롤
         }, 1000);
         setTimeout(() => {
-          messages.appendChild(document.createTextNode(`[시스템메시지] : 2초 뒤에 시작됩니다.`));
-          messages.appendChild(document.createElement("br"));
+          sysMsg('[시스템메시지] : 2초 뒤에 시작됩니다.');
           if(move.scrollHeight > 0) {
             move.scrollTop = move.scrollHeight;
           }//자동스크롤
         }, 2000);
         setTimeout(() => {
-          messages.appendChild(document.createTextNode(`[시스템메시지] : 1초 뒤에 시작됩니다.`));
-          messages.appendChild(document.createElement("br"));
-            console.log(index);
+          sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
+          console.log('현재' + index);
           if(move.scrollHeight > 0) {
             move.scrollTop = move.scrollHeight;
           }//자동스크롤
@@ -257,12 +256,18 @@
       if(data.flag === true){
         if(data.nick === nick) {
           document.getElementById(currentId).innerHTML = `${data.score} Points`;
+            console.log(search);
+            console.log(data);
+            console.log(result);
         }else{
           var search = result.indexOf(data.id);
+          console.log(search);
+            console.log(data);
+            console.log(result);
           document.getElementById(result[search]).innerHTML = `${data.score} Points`;
         }
         var pi = url.findIndex(i => i == nowSong);
-        answer[pi] = 'asdlkfasldkgjladskjglasfasdfas';
+        answer[pi] = 'YomiQuiZMaDeBYYOMIAndideA';
         keyword[pi] = {keyword:''};
         // console.log(keyword);
         //스코어 변경
@@ -278,8 +283,9 @@
         // }, 4000); //남은 엔드타임 전부
         // timeLimit = "<%= @room.limitTime %>";
         // //다음곡 넘기기
-        messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
-        messages.appendChild(document.createElement("br"));
+        sysMsg(`${data.nick}님 정답입니다!`);
+        // messages.appendChild(document.createTextNode(`${data.nick}님 정답입니다!`));
+        // messages.appendChild(document.createElement("br"));
         // setTimeout(() => {
         //   messages.appendChild(document.createTextNode(`[시스템메시지] : 3초 뒤에 시작됩니다.`));
         //   messages.appendChild(document.createElement("br"));
@@ -318,6 +324,7 @@
           resolve(data);
           url = data.url;
           nowSong = data.url[0];
+          console.log(nowSong);
           stArr = data.startTime;
           keyword = data.keyword;
           answer = data.answer;
