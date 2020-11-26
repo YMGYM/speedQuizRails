@@ -289,26 +289,23 @@
           resolve(data);
           url = data.url;
           nowSong = data.url[0];
-          console.log(nowSong);
           stArr = data.startTime;
           keyword = data.keyword;
           answer = data.answer;
         });
       });
+      player.loadVideoById({
+        'videoId': url[0],
+        'startSeconds': stArr[0],
+        'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
+      });
     }
 
     document.addEventListener("DOMContentLoaded", socketFunction);
-
     //시작할 시 문제정보 받음
     //더미버튼
     function startButtonClick() {
         var btn = document.getElementById("startButton");
         btn.style.display = "none";
-
-        player.loadVideoById({
-          'videoId': url[0],
-          'startSeconds': stArr[0],
-          'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
-        });
     }
 </script>
