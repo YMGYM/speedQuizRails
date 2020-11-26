@@ -156,6 +156,7 @@
       questionInfo: questionInfo,
       roomId: roomId,
     });
+    console.log(questionInfo);
 
     socket.emit('grating', {nick: nick, roomId: roomId});
 
