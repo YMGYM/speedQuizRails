@@ -48,6 +48,7 @@ io.sockets.on("connection", function(socket) {
         //resolve(data);
 
         roomId = data.roomId;
+        question = '';
         switch(data.questionInfo){
           case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
             question = './Questions/girlsIdol.csv';
@@ -77,8 +78,8 @@ io.sockets.on("connection", function(socket) {
         //   .on('end', () => {
         //
         //   });
-        rowArr.length = 0;
-        
+        rowArr = [];
+
         fs.createReadStream(question)
           .pipe(csv())
           .on('data', (row) => {
