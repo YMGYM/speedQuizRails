@@ -44,28 +44,28 @@ io.sockets.on("connection", function(socket) {
     //io.emit('question');
   function socketFunction(callback){
     //await new Promise(resolve => {
-      socket.on('question', async(data) => {
+      socket.on('question', (data) => {
         //resolve(data);
 
-        roomId = await data.roomId;
+        roomId = data.roomId;
         switch(data.questionInfo){
           case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
-            question = await './Questions/girlsIdol.csv';
+            question = './Questions/girlsIdol.csv';
             break;
           case "추억을 불러 일으키는 게임들.. (난이도 중)":
-            question = await './Questions/games.csv';
+            question = './Questions/games.csv';
             break;
           case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
-            question = await './Questions/advertise.csv';
+            question = './Questions/advertise.csv';
             break;
           case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
-            question = await './Questions/animesong.csv';
+            question = './Questions/animesong.csv';
             break;
           case "도전! 한국 가요 마스터! (난이도 중)":
-            question = await './Questions/Kpop.csv';
+            question = './Questions/Kpop.csv';
             break;
           case "한국어 애니메이션 OST로 떠나는 추억여행 (난이도 중)":
-            question = await './Questions/koreanAnimation.csv';
+            question = './Questions/koreanAnimation.csv';
             break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
@@ -77,8 +77,9 @@ io.sockets.on("connection", function(socket) {
         //   .on('end', () => {
         //
         //   });
-        await rowArr.length = 0;
-        await fs.createReadStream(question)
+        rowArr.length = 0;
+        
+        fs.createReadStream(question)
           .pipe(csv())
           .on('data', (row) => {
             rowArr.push(row);
