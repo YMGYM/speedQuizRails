@@ -104,7 +104,7 @@
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
         event.target.mute();
-        event.target.playVideo();
+        // event.target.playVideo();
     }
 
     // 5. The API calls this function when the player's state changes.
@@ -280,7 +280,11 @@
     });
 
     ///초기 재생오류 해결
-
+    setTimeout(() => {player.loadVideoById({
+        'videoId': url[0],
+        'startSeconds': stArr[0],
+        'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
+    })},3000);
 
     //채팅 오갈때마다 검사
     async function socketFunction() {
