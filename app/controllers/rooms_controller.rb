@@ -38,6 +38,11 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find(params[:id])
 
+    if @room.nowPlaying = true
+      redirect_to rooms_path, flash: {alert: "게임중인 방에는 들어갈 수 없어요"}
+      return
+    end
+
     if !current_user.player
       @room.players.create(user_id: current_user.id)
     end
@@ -135,10 +140,10 @@ class RoomsController < ApplicationController
 
   def startGame
     room = current_user.room
-    # if room.players.size == 1
-    #   redirect_to room, flash: {alert: "혼자서는 게임할 수 없어요!"}
-    #   return
-    # end
+    if room.players.size == 1
+      redirect_to room, flash: {alert: "혼자서는 게임할 수 없어요!"}
+      return
+    end
     stat = !room.nowPlaying
     room.update(nowPlaying: stat)
     redirect_to room
