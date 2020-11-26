@@ -48,35 +48,27 @@ io.sockets.on("connection", function(socket) {
         //resolve(data);
 
         roomId = data.roomId;
-        new Promise(resolve => {
-          resolve(question);
-          question = '';
-        });
 
-        new Promise(resolve => {
-          resolve(question);
-          switch(data.questionInfo){
-            case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
-              question = './Questions/girlsIdol.csv';
-              break;
-            case "추억을 불러 일으키는 게임들.. (난이도 중)":
-              question = './Questions/games.csv';
-              break;
-            case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
-              question = './Questions/advertise.csv';
-              break;
-            case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
-              question = './Questions/animesong.csv';
-              break;
-            case "도전! 한국 가요 마스터! (난이도 중)":
-              question = './Questions/Kpop.csv';
-              break;
-            case "한국어 애니메이션 OST로 떠나는 추억여행 (난이도 중)":
-              question = './Questions/koreanAnimation.csv';
-              break;
-          } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
-        });
-
+        switch(data.questionInfo){
+          case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
+            question = './Questions/girlsIdol.csv';
+            break;
+          case "추억을 불러 일으키는 게임들.. (난이도 중)":
+            question = './Questions/games.csv';
+            break;
+          case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
+            question = './Questions/advertise.csv';
+            break;
+          case "당신이 최고의 오타쿠! 일본 애니메이션 OST들 (난이도 중)":
+            question = './Questions/animesong.csv';
+            break;
+          case "도전! 한국 가요 마스터! (난이도 중)":
+            question = './Questions/Kpop.csv';
+            break;
+          case "한국어 애니메이션 OST로 떠나는 추억여행 (난이도 중)":
+            question = './Questions/koreanAnimation.csv';
+            break;
+        } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         // fs.createReadStream('./Questions/AllQuestionList.csv')
         //   .pipe(csv())
@@ -120,6 +112,7 @@ io.sockets.on("connection", function(socket) {
 
             socket.join(data.roomId);
             callback();
+            question = null;
         });
       });
 //    });
