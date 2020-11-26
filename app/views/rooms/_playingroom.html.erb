@@ -295,15 +295,7 @@
           answer = data.answer;
         });
       });
-
-      player.loadVideoById({
-        'videoId': url[0],
-        'startSeconds': stArr[0],
-        'endSeconds': stArr[0] + timeLimit
-      });
     }
-
-    socketFunction();
 
     document.addEventListener("DOMContentLoaded", socketFunction);
 
@@ -312,5 +304,11 @@
     function startButtonClick() {
         var btn = document.getElementById("startButton");
         btn.style.display = "none";
+
+        player.loadVideoById({
+          'videoId': url[0],
+          'startSeconds': stArr[0],
+          'endSeconds': parseInt(stArr[0]) + parseInt(timeLimit)
+        });
     }
 </script>
