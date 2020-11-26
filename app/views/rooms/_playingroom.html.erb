@@ -296,20 +296,12 @@
         });
       });
 
-      setTimeout(() => {
-        player.loadVideoById({
-          'videoId': url[0],
-          'startSeconds': stArr[0],
-          'endSeconds': stArr[0] + timeLimit
-        });
-      }, 2000);
+      player.loadVideoById({
+        'videoId': url[0],
+        'startSeconds': stArr[0],
+        'endSeconds': stArr[0] + timeLimit
+      });
     }
-
-    player.loadVideoById({
-      'videoId': 'aserjsndrksadnrasn',
-      'startSeconds': 0,
-      'endSeconds': 0
-    });
 
     document.addEventListener("DOMContentLoaded", socketFunction);
 
