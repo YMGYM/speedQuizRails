@@ -56,7 +56,7 @@ io.sockets.on("connection", function(socket) {
         new Promise(resolve => {
           resolve(question);
           switch(data.questionInfo){
-            case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
+            case "인싸 감성! 당신의 K-POP 걸그룹 지식은?(난이도 상)":
               question = './Questions/girlsIdol.csv';
               break;
             case "추억을 불러 일으키는 게임들.. (난이도 중)":
