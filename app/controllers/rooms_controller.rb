@@ -53,7 +53,7 @@ class RoomsController < ApplicationController
 
     @emitter = SocketIO::Emitter.new(
       redis: Redis.new(
-        :host => '3.88.111.248',
+        :host => '3.214.183.189',
         # :host => 'localhost',
         :port => '6379'
       )

@@ -4,7 +4,7 @@ set :user, 'ubuntu'
 ## [Example] set :user, 'ubuntu'
 
 ## [변수 설정] REMOTE 서버 설정
-set :remote_server_ip, "3.88.111.248"
+set :remote_server_ip, "3.214.183.189"
 # [Example] set :remote_server_ip, "52.78.236.246"
 
 ## [변수 설정] Remote서버에 대해 배포 환경변수 설정
