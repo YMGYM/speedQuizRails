@@ -73,6 +73,9 @@ class RoomsController < ApplicationController
   def update
     room = Room.find(params[:id])
     room.update(rooms_params)
+    question_id =  params.require(:room).permit(:question)['question'].to_i
+    question = Question.find(question_id)
+    room.update(question: question)
 
     if room.save
       session[:lastroom] = room.id
