@@ -17,5 +17,5 @@ set :deploy_to, "/home/#{fetch(:user)}/#{fetch(:application)}"
 server fetch(:remote_server_ip), port: 22, roles: [:web, :app, :db], primary: true
 
 ## SSH Remote 설정 (서버 아이디 및 pem Key 경로 설정)
-set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(/Users/jun/Downloads/YM_EC2_KEYPEM.pem)}
+set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(~/.ssh/yomiquiz_gcp)}
 # set :ssh_options, { forward_agent: true, user: fetch(:user), keys: %w(C:\Users\KCM\Desktop\ruby-kcm.pem) }

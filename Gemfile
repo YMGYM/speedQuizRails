@@ -73,3 +73,7 @@ gem 'capistrano-database-yml'
 gem 'capistrano-rvm'
 
 gem 'devise-i18n'
+
+#for deploy ssh
+gem 'ed25519'
+gem 'bcrypt_pbkdf'
