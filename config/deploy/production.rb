@@ -1,10 +1,10 @@
 ## [변수 설정] Remote 서버 : 아이디
 # AWS EC2 Ubuntu는 기본으로 아이디는 ubuntu 이다.
-set :user, 'ubuntu'
+set :user, 'cake236'
 ## [Example] set :user, 'ubuntu'
 
 ## [변수 설정] REMOTE 서버 설정
-set :remote_server_ip, "3.214.183.189"
+set :remote_server_ip, "34.67.110.223"
 # [Example] set :remote_server_ip, "52.78.236.246"
 
 ## [변수 설정] Remote서버에 대해 배포 환경변수 설정
