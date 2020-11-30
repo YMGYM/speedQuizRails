@@ -68,6 +68,9 @@ io.sockets.on("connection", function(socket) {
           case "한국어 애니메이션 OST로 떠나는 추억여행 (난이도 중)":
             question = './Questions/koreanAnimation.csv';
             break;
+          case "드라마 OST로 안방극장 탐험(난이도 중)":
+            question = './Questions/koreanDrama.csv';
+            break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         // fs.createReadStream('./Questions/AllQuestionList.csv')
