@@ -38,6 +38,11 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find(params[:id])
 
+    if (@room.nowPlaying == true) && (!current_user.player)
+      redirect_to rooms_path, flash: {alert: "게임중인 방에는 들어갈 수 없어요"}
+      return
+    end
+
     if !current_user.player
       @room.players.create(user_id: current_user.id)
     end
@@ -48,7 +53,7 @@ class RoomsController < ApplicationController
 
     @emitter = SocketIO::Emitter.new(
       redis: Redis.new(
-        :host => '3.88.111.248',
+        :host => '34.67.110.223',
         # :host => 'localhost',
         :port => '6379'
       )
@@ -68,6 +73,9 @@ class RoomsController < ApplicationController
   def update
     room = Room.find(params[:id])
     room.update(rooms_params)
+    question_id =  params.require(:room).permit(:question)['question'].to_i
+    question = Question.find(question_id)
+    room.update(question: question)
 
     if room.save
       session[:lastroom] = room.id
@@ -135,10 +143,12 @@ class RoomsController < ApplicationController
 
   def startGame
     room = current_user.room
-    # if room.players.size == 1
-    #   redirect_to room, flash: {alert: "혼자서는 게임할 수 없어요!"}
-    #   return
-    # end
+    # ------------ 솔로 플레잉 방지 (디버깅 시 오프)
+    if room.players.size == 1
+      redirect_to room, flash: {alert: "혼자서는 게임할 수 없어요!"}
+      return
+    end
+    # -------------------------------
     stat = !room.nowPlaying
     room.update(nowPlaying: stat)
     redirect_to room

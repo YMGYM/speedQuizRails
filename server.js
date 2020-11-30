@@ -50,11 +50,11 @@ io.sockets.on("connection", function(socket) {
         roomId = data.roomId;
 
         switch(data.questionInfo){
+          case "인싸 감성! 당신의 K-POP 걸그룹 지식은?(난이도 상)":
+            question = './Questions/girlIdol.csv';
+            break;
           case "추억을 불러 일으키는 게임들.. (난이도 중)":
             question = './Questions/games.csv';
-            break;
-          case "인싸 감성! 당신의 K-POP 걸그룹 지식은?(난이도 상)":
-            question = './Questions/girlIdol.csv';
             break;
           case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
             question = './Questions/advertise.csv';
@@ -68,6 +68,9 @@ io.sockets.on("connection", function(socket) {
           case "한국어 애니메이션 OST로 떠나는 추억여행 (난이도 중)":
             question = './Questions/koreanAnimation.csv';
             break;
+          case "드라마 OST로 안방극장 탐험(난이도 중)":
+            question = './Questions/koreanDrama.csv';
+            break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         // fs.createReadStream('./Questions/AllQuestionList.csv')
@@ -79,14 +82,14 @@ io.sockets.on("connection", function(socket) {
         //
         //   });
         rowArr = [];
-
+        console.log(question);
         fs.createReadStream(question)
           .pipe(csv())
           .on('data', (row) => {
             rowArr.push(row);
           })//해당 question에 해당하는 csv를 읽고 배열에 넣음
           .on('end', () => {
-            //console.log('CSV file successfully processed');
+            // console.log('CSV file successfully processed');
             shuffle(rowArr); //csv를 읽은 배열을 섞음
             if(roomIdArray.length === 0){
               roomIdArray.push({id: data.roomId});
@@ -112,7 +115,6 @@ io.sockets.on("connection", function(socket) {
 
             socket.join(data.roomId);
             callback();
-            question = null;
         });
       });
 //    });
@@ -139,7 +141,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('joinRoom', (data) => {
-    //console.log(data, "조인룸");
+    console.log(data, "조인룸");
     socket.join(data.roomId);
     io.to(data.roomId).emit('joinRoom', `${data.nick}님이 입장하셨습니다.`);
   });
