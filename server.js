@@ -50,11 +50,11 @@ io.sockets.on("connection", function(socket) {
         roomId = data.roomId;
 
         switch(data.questionInfo){
-          case "인싸 감성! 당신의 K-POP 걸그룹  지식은?(난이도 상)":
-            question = './Questions/girlsIdol.csv';
-            break;
           case "추억을 불러 일으키는 게임들.. (난이도 중)":
             question = './Questions/games.csv';
+            break;
+          case "인싸 감성! 당신의 K-POP 걸그룹 지식은?(난이도 상)":
+            question = './Questions/girlIdol.csv';
             break;
           case "아는듯 모르는듯... 긴가민가한 광고들 (난이도 하)":
             question = './Questions/advertise.csv';
