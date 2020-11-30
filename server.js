@@ -73,14 +73,6 @@ io.sockets.on("connection", function(socket) {
             break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
-        // fs.createReadStream('./Questions/AllQuestionList.csv')
-        //   .pipe(csv())
-        //   .on('data', (row) => {
-        //     console.log(row);
-        //   })
-        //   .on('end', () => {
-        //
-        //   });
         rowArr = [];
         console.log(question);
         fs.createReadStream(question)
@@ -89,7 +81,6 @@ io.sockets.on("connection", function(socket) {
             rowArr.push(row);
           })//해당 question에 해당하는 csv를 읽고 배열에 넣음
           .on('end', () => {
-            // console.log('CSV file successfully processed');
             shuffle(rowArr); //csv를 읽은 배열을 섞음
             if(roomIdArray.length === 0){
               roomIdArray.push({id: data.roomId});
@@ -159,7 +150,6 @@ io.sockets.on("connection", function(socket) {
       keyArray = key.split(' ');
     } //중간에 공백이 있는 경우에 공백을 중심으로 문자열을 자르고 배열에 넣음
     if(data.answer[indexNum].answer === data.value){
-      //|| keyArray.indexOf(key.value) !== -1
       //정답이랑 같거나, 키워드랑 같거나, 키워드의 배열에 채팅 값이 있으면 실행
       flag = true; //클라이언트에 넘길 flag값
       score += 10; //스코어를 +10
