@@ -156,7 +156,7 @@
     });
 
     const timer = setInterval(() => {
-      index = url.findIndex(i => i == nowSong);
+      index = parseInt(url.findIndex(i => i == nowSong));
       if(timeLimit < 0) {
         nowSong = url[index+1];
         setTimeout(() => {
