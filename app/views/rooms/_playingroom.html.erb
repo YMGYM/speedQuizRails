@@ -196,7 +196,7 @@
           for(var i in result){
             var finishUser = document.getElementById(result[i]).innerHTML;
             var point = finishUser.split(" ")[0];
-            finishArray.push({id: result[i], point: point});
+            finishArray.push({id: result[i], point: parseInt(point)});
           }
           var max = finishArray.reduce(function(prev, current) {
             return (prev.point > current.point) ? prev : current

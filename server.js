@@ -74,7 +74,6 @@ io.sockets.on("connection", function(socket) {
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         rowArr = [];
-        console.log(question);
         fs.createReadStream(question)
           .pipe(csv())
           .on('data', (row) => {
