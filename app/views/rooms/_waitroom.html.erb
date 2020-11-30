@@ -9,11 +9,11 @@
 
 <% if @user.isMaster == true %>
   <div class="row">
-    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-secondary col-sm-4", method: :post, "data-turbolinks": false, "onClick": "start()" %>
-    <div class="col-sm-1"></div>
-    <%= link_to '방 정보 수정', edit_room_path, class: "btn btn-lg btn-outline-dark col-sm-3", method: :get %>
-    <div class="col-sm-1"></div>
-    <%= link_to '방 나가기', rooms_path, class: "btn btn-lg btn-outline-dark col-sm-3", method: :get %>
+    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-secondary col-sm-5", method: :post, "data-turbolinks": false, "onClick": "start()" %>
+    <div class="col-sm-2"></div>
+    <%#= link_to '방 정보 수정', edit_room_path, class: "btn btn-lg btn-outline-dark col-sm-3", method: :get %>
+<!--    <div class="col-sm-1"></div>-->
+    <%= link_to '방 나가기', rooms_path, class: "btn btn-lg btn-outline-dark col-sm-5", method: :get %>
   </div>
 <% else %>
   <div class="row">
@@ -63,7 +63,7 @@
 
 </div>
 
-<p id="ViewTimer"></p>
+<!--<p id="ViewTimer"></p>-->
 
 <script>
 

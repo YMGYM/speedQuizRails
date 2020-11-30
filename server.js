@@ -138,7 +138,7 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on('joinRoom', (data) => {
-    //console.log(data, "조인룸");
+    console.log(data, "조인룸");
     socket.join(data.roomId);
     io.to(data.roomId).emit('joinRoom', `${data.nick}님이 입장하셨습니다.`);
   });
