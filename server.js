@@ -71,6 +71,9 @@ io.sockets.on("connection", function(socket) {
           case "드라마 OST로 안방극장 탐험(난이도 중)":
             question = './Questions/koreanDrama.csv';
             break;
+          case "(테스트중인 문제입니다)":
+            question = './Questions/boyIdol.csv';
+            break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         rowArr = [];
