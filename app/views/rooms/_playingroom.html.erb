@@ -184,6 +184,7 @@
         setTimeout(() => {
           sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
           console.log('현재' + index);
+          console.log('다음' + answer);
           if(move.scrollHeight > 0) {
             move.scrollTop = move.scrollHeight;
           }//자동스크롤
@@ -246,20 +247,14 @@
       if(data.flag === true){
         if(data.nick === nick) {
           document.getElementById(currentId).innerHTML = `${data.score} Points`;
-            console.log(search);
-            console.log(data);
-            console.log(result);
         }else{
           var search = result.indexOf(data.id);
-          console.log(search);
-            console.log(data);
-            console.log(result);
           document.getElementById(result[search]).innerHTML = `${data.score} Points`;
         }
         var pi = url.findIndex(i => i == nowSong);
         answer[pi] = 'YomiQuiZMaDeBYYOMIAndideA';
         keyword[pi] = {keyword:''};
-        // console.log(keyword);
+        console.log(answer[(pi+1)]);
         //스코어 변경
         sysMsg(`${data.nick}님 정답입니다!`);
         if(move.scrollHeight > 0) {
