@@ -184,7 +184,6 @@
         setTimeout(() => {
           sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
           console.log('현재' + index);
-          console.log('다음' + answer);
           if(move.scrollHeight > 0) {
             move.scrollTop = move.scrollHeight;
           }//자동스크롤
@@ -254,7 +253,6 @@
         var pi = url.findIndex(i => i == nowSong);
         answer[pi] = 'YomiQuiZMaDeBYYOMIAndideA';
         keyword[pi] = {keyword:''};
-        console.log(answer[(pi+1)]);
         //스코어 변경
         sysMsg(`${data.nick}님 정답입니다!`);
         if(move.scrollHeight > 0) {
