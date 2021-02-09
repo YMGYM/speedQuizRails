@@ -74,6 +74,9 @@ io.sockets.on("connection", function(socket) {
           case "과거부터 현재까지, K-POP 남자 아이돌 테스트!(난이도 중)":
             question = './Questions/boyIdol.csv';
             break;
+          case "당신은 이 곡을 기억하고 계십니까? K-POP 제목 맞추기 (난이도 상)":
+            question = './Questions/kpopName.csv';
+            break;
         } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
         rowArr = [];
