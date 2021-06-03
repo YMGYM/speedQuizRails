@@ -4,20 +4,20 @@
 <hr>
 <h5><%= @room.question.description %></h5>
 <hr>
-<p>문제 수 : <%= @room.questionNumber %></p>
-<p>제한시간 : <%= @room.limitTime %></p>
+<p><%= t('rooms.waitingroom.text1') %> : <%= @room.questionNumber %></p>
+<p><%= t('rooms.waitingroom.text2') %> : <%= @room.limitTime %></p>
 
 <% if @user.isMaster == true %>
   <div class="row">
-    <%= link_to '게임 시작', startGame_path, class: "btn btn-lg btn-secondary col-sm-5", method: :post, "data-turbolinks": false, "onClick": "start()" %>
+    <%= link_to t('rooms.waitingroom.text3'), startGame_path, class: "btn btn-lg btn-secondary col-sm-5", method: :post, "data-turbolinks": false, "onClick": "start()" %>
     <div class="col-sm-2"></div>
-    <%#= link_to '방 정보 수정', edit_room_path, class: "btn btn-lg btn-outline-dark col-sm-3", method: :get %>
+    <%#= link_to t('rooms.waitingroom.text4'), edit_room_path, class: "btn btn-lg btn-outline-dark col-sm-3", method: :get %>
 <!--    <div class="col-sm-1"></div>-->
-    <%= link_to '방 나가기', rooms_path, class: "btn btn-lg btn-outline-dark col-sm-5", method: :get %>
+    <%= link_to t('rooms.waitingroom.text5'), rooms_path, class: "btn btn-lg btn-outline-dark col-sm-5", method: :get %>
   </div>
 <% else %>
   <div class="row">
-    <%= link_to '방 나가기', rooms_path, class: "btn btn-lg btn-outline-dark col-sm-12", method: :get %>
+    <%= link_to t('rooms.waitingroom.text5'), rooms_path, class: "btn btn-lg btn-outline-dark col-sm-12", method: :get %>
   </div>
 <% end %>
 
@@ -31,7 +31,7 @@
 
 <form onsubmit="return false">
   <div class="form-group">
-    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder="이곳에 채팅을 입력하세요"
+    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder=<%= t('rooms.waitingroom.text6') %>
     onkeydown = "if (event.keyCode == 13)
                         document.getElementById('sendButton').click()" >
 
@@ -75,6 +75,8 @@
     var playingFlag = "<%= @room.nowPlaying %>";
     var move = document.getElementById("box");
 
+    const lang = window.location.pathname.split('/')[1];
+
     function send() {
       var value = document.getElementById("text").value;
       socket.emit("sendUserWaiting", {
@@ -94,7 +96,13 @@
 
     socket.on('joinRoom', (data) => {
       var messages = document.getElementById("messages");
-      var text = document.createTextNode(data);
+      var text;
+      if(lang == "ko"){
+        text = document.createTextNode(`${data}님이 입장하셨습니다.`);
+      }else{
+        text = document.createTextNode(`${data}様が入場しました.`);
+      }
+      
       messages.appendChild(text);
       messages.appendChild(document.createElement("br"));
       if(move.scrollHeight > 0) {

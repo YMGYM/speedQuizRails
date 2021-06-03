@@ -8,11 +8,11 @@
 <hr>
 <h5><%= @room.question.description %></h5>
 <hr>
-<p>문제 수 : <%= @room.questionNumber %></p>
-<p>제한시간 : <%= @room.limitTime %></p>
+<p><%= t('rooms.playingRoom.text1') %> : <%= @room.questionNumber %></p>
+<p><%= t('rooms.playingRoom.text2') %> : <%= @room.limitTime %></p>
 <hr>
-<button id="startButton" class="form-control btn btn-danger" onClick="startButtonClick()">게임을 시작하기 전에 한 번 눌러주세요</button><br />
-<button id="unmuteButton" class="form-control btn btn" >소리가 나오지 않는다면 이곳을 눌러주세요(다시재생 포함)</button>
+<button id="startButton" class="form-control btn btn-danger" onClick="startButtonClick()"><%= t('rooms.playingRoom.text3') %></button><br />
+<button id="unmuteButton" class="form-control btn btn" ><%= t('rooms.playingRoom.text4') %></button>
 <br />
 <hr>
 <div id="box" class="container overflow-auto" style="height: 300px">
@@ -23,7 +23,7 @@
 
 <form onsubmit="return false">
   <div class="form-group">
-    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder="이곳에 채팅을 입력하세요"
+    <input type="text" id="text" class="form-control form-control-lg margin-top-10"  placeholder= <%= t('rooms.playingRoom.text1') %>
     onkeydown = "if (event.keyCode == 13)
                         document.getElementById('sendButton').click()" >
 
@@ -69,6 +69,8 @@
     var answer;
     var index;
     var finishArray = [];
+
+    const lang = window.location.pathname.split('/')[1];
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -120,20 +122,38 @@
         messages.appendChild(sysInfo);
     }
 
-    setTimeout(() => {
-      sysMsg('[시스템메시지] : 3초 뒤에 시작됩니다.');
-    }, 1000);
+    if(lang == "ko"){
+      setTimeout(() => {
+        sysMsg('[시스템메시지] : 3초 뒤에 시작됩니다.');
+      }, 1000);
 
-    setTimeout(() => {
-      sysMsg('[시스템메시지] : 2초 뒤에 시작됩니다.');
-    }, 2000);
-    setTimeout(() => {
-      sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
-    }, 3000);
+      setTimeout(() => {
+        sysMsg('[시스템메시지] : 2초 뒤에 시작됩니다.');
+      }, 2000);
+      setTimeout(() => {
+        sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
+      }, 3000);
 
-    setInterval(() => {
-      timeLimit -= 1;
-    }, 1000);
+      setInterval(() => {
+        timeLimit -= 1;
+      }, 1000);
+    }else{
+      setTimeout(() => {
+        sysMsg('[システムメッセージ] : 3秒後に始まります.');
+      }, 1000);
+
+      setTimeout(() => {
+        sysMsg('[システムメッセージ] : 2秒後に始まります.');
+      }, 2000);
+      setTimeout(() => {
+        sysMsg('[システムメッセージ] : 1秒後に始まります.');
+      }, 3000);
+
+      setInterval(() => {
+        timeLimit -= 1;
+      }, 1000);
+    }
+    
 
     window.addEventListener('beforeunload', (event) => {
       event.preventDefault();
@@ -151,8 +171,14 @@
 
     socket.on('grating', (data) => {
       var messages = document.getElementById('messages');
-      var text = document.createTextNode(`${data}님이 입장하셨습니다.`);
-      sysMsg(`${data}님이 입장하셨습니다!`);
+      var text;
+      if(lang == "ko"){
+        text = document.createTextNode(`${data}님이 입장하셨습니다.`);
+        sysMsg(`${data}님이 입장하셨습니다!`);
+      }else{
+        text = document.createTextNode(`${data}様が入場しました.`);
+        sysMsg(`${data}様が入場しました！`);
+      }
     });
 
     const timer = setInterval(() => {
@@ -168,26 +194,50 @@
           });
         }, 4000);
         timeLimit = "<%= @room.limitTime %>";
-        sysMsg(`제한시간이 초과되었습니다.`);
-        setTimeout(() => {
-          sysMsg('[시스템메시지] : 3초 뒤에 시작됩니다.');
-          if(move.scrollHeight > 0) {
-            move.scrollTop = move.scrollHeight;
-          }//자동스크롤
-        }, 1000);
-        setTimeout(() => {
-          sysMsg('[시스템메시지] : 2초 뒤에 시작됩니다.');
-          if(move.scrollHeight > 0) {
-            move.scrollTop = move.scrollHeight;
-          }//자동스크롤
-        }, 2000);
-        setTimeout(() => {
-          sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
-          console.log('현재' + index);
-          if(move.scrollHeight > 0) {
-            move.scrollTop = move.scrollHeight;
-          }//자동스크롤
-        }, 3000);
+        if(lang =="ko"){
+          sysMsg(`제한시간이 초과되었습니다.`);
+          setTimeout(() => {
+            sysMsg('[시스템메시지] : 3초 뒤에 시작됩니다.');
+            if(move.scrollHeight > 0) {
+              move.scrollTop = move.scrollHeight;
+            }//자동스크롤
+          }, 1000);
+          setTimeout(() => {
+            sysMsg('[시스템메시지] : 2초 뒤에 시작됩니다.');
+            if(move.scrollHeight > 0) {
+              move.scrollTop = move.scrollHeight;
+            }//자동스크롤
+          }, 2000);
+          setTimeout(() => {
+            sysMsg('[시스템메시지] : 1초 뒤에 시작됩니다.');
+            console.log('현재' + index);
+            if(move.scrollHeight > 0) {
+              move.scrollTop = move.scrollHeight;
+            }//자동스크롤
+          }, 3000);
+        }else{
+          sysMsg(`時間切れになりました.`);
+          setTimeout(() => {
+            sysMsg('[システムメッセージ] : 3秒後に始まります.');
+            if(move.scrollHeight > 0) {
+              move.scrollTop = move.scrollHeight;
+            }//자동스크롤
+          }, 1000);
+          setTimeout(() => {
+            sysMsg('[システムメッセージ] : 2秒後に始まります.');
+            if(move.scrollHeight > 0) {
+              move.scrollTop = move.scrollHeight;
+            }//자동스크롤
+          }, 2000);
+          setTimeout(() => {
+            sysMsg('[システムメッセージ] : 1秒後に始まります.');
+            console.log('현재' + index);
+            if(move.scrollHeight > 0) {
+              move.scrollTop = move.scrollHeight;
+            }//자동스크롤
+          }, 3000);
+        }
+        
       }
 
       //시간초과되었을 때 다음으로 넘김
@@ -201,8 +251,12 @@
           var max = finishArray.reduce(function(prev, current) {
             return (prev.point > current.point) ? prev : current
           });
-
-          alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
+          if(lang == "ko"){
+            alert("문제가 모두 끝났습니다!\n결과 창으로 이동합니다!");
+          }else{
+            alert("問題が終わりました！\n結果ページへ移動します！");
+          }
+          
           window.location.href = `/result/<%= @room.id %>/${max.id}`; // 우승자 id값
         }
         finish();
@@ -309,7 +363,11 @@
             event.keyCode = 0;
             event.cancelBubble = true;
             event.returnValue = false;
-            alert("게임중에는 새로고침을 하실 수 없어요");
+            if(lang == "ko"){
+              alert("게임중에는 새로고침을 하실 수 없어요");
+            }else{
+              alert('ゲーム中にはリロードできません');
+            }
         }
     }
     document.onkeydown = doNotReload;

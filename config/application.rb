@@ -15,6 +15,9 @@ module SpeedQuiz
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
+    config.i18n.available_locales = %i(ja ko)
+    config.i18n.enforce_available_locales = true
     config.i18n.default_locale = :ko
     config.time_zone = 'Seoul'
   end
