@@ -78,7 +78,12 @@
         newStr += "ko"+"/";
       }
     }
-    location.href = window.location.protocol + "//" + window.location.host + newStr;
+
+    if(path.length < 2){
+      location.href = window.location.protocol + "//" + window.location.host + newStr + 'rooms';
+    }else{
+      location.href = window.location.protocol + "//" + window.location.host + newStr;
+    }
   });
 
   document.getElementById('ja').addEventListener('click', () => {
@@ -91,6 +96,10 @@
         newStr += "ja"+"/";
       }
     }
-    location.href = window.location.protocol + "//" + window.location.host + newStr;
+    if(path.length < 2){
+      location.href = window.location.protocol + "//" + window.location.host + newStr + 'rooms';
+    }else{
+      location.href = window.location.protocol + "//" + window.location.host + newStr;
+    }
   });
 </script>
