@@ -5,7 +5,7 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "4.2.2",
+    "@rails/webpacker": "4.3.0",
     "csv-parser": "2.3.3",
     "express": "4.17.1",
     "node-rails-cookies": "0.0.0",
@@ -16,6 +16,6 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "3.11.0"
+    "webpack-dev-server": "3.11.2"
   }
 }

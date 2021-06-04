@@ -30,21 +30,32 @@
   <body>
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="<%= rooms_path %>" data-turbolinks="false">요미퀴즈</a>
+      <div>
+        <button id="ko">
+          한국어
+        </button>
+        <button id="ja">
+          日本語
+        </button>
+      </div>
+      
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link active" href="<%= root_path %>">Home<span class="sr-only">(current)</span></a>
-          <a class="nav-link" href="<%= rooms_path %>" data-turbolinks="false">게임하기</a>
+          <a class="nav-link" href="<%= rooms_path %>" data-turbolinks="false">Play</a>
           <% if current_user %>
-                <%= link_to '로그아웃', destroy_user_session_path,  method: :delete, class: "nav-link" %>
+                <%= link_to 'Logout', destroy_user_session_path,  method: :delete, class: "nav-link" %>
           <% else %>
-              <%= link_to '로그인', new_user_session_path,class: "nav-link" %>
+              <%= link_to 'Login', new_user_session_path,class: "nav-link" %>
           <% end %>
-          <a class="nav-link" href="<%= help_path %>" data-turbolinks="false">도움말</a>
+          <a class="nav-link" href="<%= help_path %>" data-turbolinks="false">Help</a>
         </div>
       </div>
+      
     </nav>
     <% if flash.present? %>
       <div class="alert alert-dark" role="alert">
@@ -54,3 +65,32 @@
     <%= yield %>
   </body>
 </html>
+
+<script>
+  document.getElementById('ko').addEventListener('click', () => {
+    //console.log("작동");
+    const path = window.location.pathname.split('/');
+    let newStr = "";
+    for(let i = 0; i < path.length; i++){
+      if(i != 1){
+        newStr += path[i] + "/";
+      }else{
+        newStr += "ko"+"/";
+      }
+    }
+    location.href = window.location.protocol + "//" + window.location.host + newStr;
+  });
+
+  document.getElementById('ja').addEventListener('click', () => {
+    const path = window.location.pathname.split('/');
+    let newStr = "";
+    for(let i = 0; i < path.length; i++){
+      if(i != 1){
+        newStr += path[i] + "/";
+      }else{
+        newStr += "ja"+"/";
+      }
+    }
+    location.href = window.location.protocol + "//" + window.location.host + newStr;
+  });
+</script>

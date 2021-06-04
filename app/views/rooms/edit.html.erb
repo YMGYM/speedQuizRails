@@ -1,10 +1,10 @@
 <div class="container">
   <div class="row" style="height: 50px"></div>
-  <h1>방 정보 수정하기</h1>
-  <p>방의 정보를 작성해 주세요</p>
+  <h1><%= t('rooms.edit.text1') %></h1>
+  <p><%= t('rooms.edit.text2') %></p>
   <div class="row" style="height: 50px"></div>
   <div class="alert alert-danger" role="alert">
-    방 수정 후에는 새로고침을 해야 정상적으로 작동합니다!
+    <%= t('rooms.edit.text3') %>
   </div>
   <%= render 'form' %>
 </div>

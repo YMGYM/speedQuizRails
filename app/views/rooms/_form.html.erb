@@ -1,22 +1,22 @@
 <%= form_with(model: @room, local: true) do  |form| %>
 
   <div class="form-group">
-    <%= form.label :title, '방 제목' %>
+    <%= form.label :title, t('rooms.form.text1') %>
     <%= form.text_field :title, class:"form-control"%>
   </div>
 
   <div class="form-group">
-    <%= form.label :question, '문제 정보' %>
+    <%= form.label :question, t('rooms.form.text2') %>
     <%= collection_select :room, :question, Question.all, :id, :title, {}, html_options={class: "form-control"} %>
   </div>
 
   <div class="form-group row">
     <div class="col-sm-6">
-      <%= form.label :count, '문제 수' %>
+      <%= form.label :count, t('rooms.form.text3') %>
       <%= form.number_field :questionNumber, value:15, max:30, min:5, class:"form-control"%>
     </div>
     <div class="col-sm-6">
-      <%= label_tag :limitTime, '제한 시간(초)' %>
+      <%= label_tag :limitTime, t('rooms.form.text4') %>
       <%= form.number_field :limitTime, value: 60, max:300, min:20, class:"form-control"%>
     </div>
   </div>
@@ -24,20 +24,20 @@
   <div class="form-group">
     <div class="custom-control custom-switch">
       <%= form.check_box :isSecret, class: "custom-control-input"%>
-      <%= form.label :isSecret, '방을 비밀방으로 만듭니다',id: :isSecret, onclick: "openPass()", class:"custom-control-label" %>
+      <%= form.label :isSecret, t('rooms.form.text5'),id: :isSecret, onclick: "openPass()", class:"custom-control-label" %>
     </div>
   </div>
 
   <div class="form-group">
-    <%= form.label :password, '비밀번호(8글자 이상)' %>
+    <%= form.label :password, t('rooms.form.text6') %>
     <%= form.password_field :password, class:"form-control", disabled: true%>
   </div>
 
   <div class="form-group">
-    <%= form.submit "생성", class:"btn btn-secondary float-right margin-10", data: { turbolinks: false } %>
+    <%= form.submit t('rooms.form.text7'), class:"btn btn-secondary float-right margin-10", data: { turbolinks: false } %>
   </div>
 
   <div class="form-group">
-    <%= form.submit "뒤로", class:"btn btn-outline-secondary float-left margin-10" %>
+    <%= form.submit t('rooms.form.text8'), class:"btn btn-outline-secondary float-left margin-10" %>
   </div>
 <% end %>
