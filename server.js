@@ -77,6 +77,9 @@ io.sockets.on("connection", function (socket) {
         case "당신은 이 곡을 기억하고 계십니까? K-POP 제목 맞추기 (난이도 상)":
           question = "./Questions/kpopName.csv";
           break;
+        case "思い出のゲーム…(難易度 中)":
+          question = "./Questions/japanese_game.csv";
+          break;
       } //접속하면 레일즈 -> HTML -> 노드로 현재 방 문제 정보 받아서 question에 넣음
 
       rowArr = [];
