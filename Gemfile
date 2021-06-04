@@ -62,7 +62,7 @@ gem 'figaro'
 gem 'capistrano-rails-collection'
 
 ## PostgreSQL DB
-## gem 'pg'
+gem 'pg'
 ## capistrano
 gem 'capistrano'
 gem 'capistrano-bundler'
